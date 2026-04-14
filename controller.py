@@ -57,6 +57,8 @@ class CommandLine():
                         try: self.commands[user_input[0]][user_input[1]][user_input[2]](user_input[3:])
                         except IndexError: 
                             print('Not enough parameters!')
+                        except (TypeError,KeyError):
+                            print('Invalid Command, Please Try Again!')
             
 
 
@@ -75,11 +77,17 @@ class test_model():
     def _help(self, _=None):
         print(f'Model Command List: {list(self.function_dict)}')
 
-    def print_lens(self, _=None):
-        print(self.lens_list)
+    def print_lens(self, index=[]):
+        if index==[]:
+            print(self.lens_list)
+        else:
+            print(self.lens_list[index[0]])
     
-    def print_laser(self,_=None):
-        print(self.laser_list)
+    def print_laser(self,index=[]):
+        if index==[]:
+            print(self.laser_list)
+        else:
+            print(self.laser_list[index[0]])
 
     def edit_lens(self,commands):
         self.lens_list[commands.pop(0)].function_dict[commands[0]](commands[1:])
@@ -100,13 +108,20 @@ class test_model():
         
         def __init__(self,x,y):
             self.x=x; self.y=y
-            self.function_dict={'add':self.add, 'x':self.x, 'y':self.y}
+            self.function_dict={}
+            self.function_dict['add']=self.add
+            self.function_dict['subtract']=self.subtract
+            self.function_dict['set']=self.set
+
 
         def add(self,commands):
             self.x+=commands[0]; self.y+=commands[1]
 
-        def view(self):
-            print(self)
+        def subtract(self,commands):
+            self.x+=commands[0]; self.y+=commands[1]
+        
+        def set(self,commands):
+            self.x=commands[0]; self.y=commands[1]
 
         def __repr__(self):
             return(f'I really like {self.x} but NOT {self.y}.')
