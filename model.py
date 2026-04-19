@@ -52,7 +52,6 @@ class LightRay():
                         converted_y_coord^2 / lens.axis2^2)
             if radius <= lens.radius:
                 new_medium_index = lens.index_of_refraction
-
         self._last_medium = self._current_medium
         self._current_medium = new_medium_index
 
@@ -62,7 +61,6 @@ class LightRay():
         """
         if self._last_medium in (None, self._current_medium):
             return
-
         self._angle = math.degrees(math.asin
                     ((self._last_medium / self._current_medium) *
                     math.sin(math.radians(self._angle))))
@@ -85,7 +83,6 @@ class LightSource():
     Docstring Here
     """
     _type = None
-
     def __init__(self, type_of_source):
         self._type = type_of_source
 
@@ -122,3 +119,12 @@ class Model():
         """
 
         return [self._source, self._lens_list, self._ray_list]
+
+
+"""
+TO DO:
+Implement correct angle calculation (tangent plane of lens surface)
+Add code to lightsource class to generate list of rays
+Add code to model class to be able to make lenses (or otherwise figure it out)
+Add code to model class to tie it all together
+"""
