@@ -1,12 +1,16 @@
 """
-Docstring Here
+Model class for a ray optics simulation. 
+Implement model logic and functionality.
 """
 
 import math
 
 class IdealLens():
     """
-    Docstring Here
+    Implement the ideal lens subclass in the Model superclass.
+
+    Implement lenses as elliptical 2D objects with
+    uniform indicies of refraction throuought.
     """
     xpos_center = None
     ypos_center = None
@@ -16,6 +20,17 @@ class IdealLens():
     index_of_refraction = None
 
     def __init__(self, xpos, ypos, axis1, axis2, radius, index_of_refraction):
+        """
+        Initialize a lens object. 
+
+        Args:
+            xpos: the x position of the lens
+            ypos: the y position of the lens
+            axis1: length of the first axis
+            axis2: length of the second axis
+            radius: parameter controlling the size of the ellipse
+            index_of_refraction: index of refraction of the lens
+        """
         self.xpos_center = xpos
         self.ypos_center = ypos
         self.axis1 = axis1
@@ -25,7 +40,11 @@ class IdealLens():
 
 class LightRay():
     """
-    Docstring Here
+    Implement the lightray subclass. 
+
+    Implement a class for individual lightrays.
+    Contain all relevant information for a lightray
+    within the object and methods to simulate them.
     """
     _current_medium = None
     _last_medium = None
@@ -36,6 +55,15 @@ class LightRay():
     _relevant_lens_index = None
 
     def __init__(self, init_angle, init_x_pos, init_y_pos, step_size):
+        """
+        Initialize a ray object. 
+
+        Args:
+            init_angle: initial angle for a ray 
+            init_x_pos: initial x position for a ray
+            init_y_pos: initial y position for a ray
+            step_size: how large of step sizes are taken in simulation
+        """
         self._angle = init_angle
         self._current_x_pos = init_x_pos
         self._current_y_pos = init_y_pos
@@ -43,7 +71,11 @@ class LightRay():
 
     def update_medium(self, lens_list):
         """
-        Docstring Here
+        Detect if a ray is within a lens or 
+        outside and update medium accordingly.
+
+        Args:
+            lens_list: a list of lenses in the simulation
         """
         new_medium_index = 1
         for lens in lens_list:
@@ -59,7 +91,10 @@ class LightRay():
 
     def update_angle(self, lens_list):
         """
-        Docstring Here
+        Update a ray's angle according to Snell's law. 
+
+        Args:
+            lens_list: a list of lenses in the simulation
         """
         if self._last_medium in (None, self._current_medium):
             return
@@ -76,7 +111,10 @@ class LightRay():
 
     def take_step(self, lens_list):
         """
-        Docstring Here
+        Simulate a ray for a single step. 
+
+        Args:
+            lens_list: a list of lenses in the simulation
         """
         self._pos_list.append([self._current_x_pos, self._current_y_pos])
         self.update_medium(lens_list)
@@ -89,7 +127,11 @@ class LightRay():
 
 class LightSource():
     """
-    Docstring Here
+    Implement the LightSource class. 
+
+    A class to define source types and help
+    generate lists of ray objects in accordance
+    with the source type. 
     """
     _type = None
     def __init__(self, type_of_source):
@@ -97,7 +139,13 @@ class LightSource():
 
     def generate_ray_list(self, init_x_pos, init_y_pos, step_size):
         """
-        Docstring Here
+        Generate a list of rays in accordance
+        to source type. 
+
+        Args:
+            init_x_pos: the initial x position to generate rays at
+            init_y_pos: the inital y position to generate rays at
+            step_size: the step size to generate rays with
         """
         if self._type != "standard":
             return
@@ -111,7 +159,10 @@ class LightSource():
 
 class Model():
     """
-    Docstring Here
+    Implement the Model class. 
+
+    A class to utilize above defined helper classes. 
+    Implement functions to run the ray optics simulation. 
     """
     _source = None
     _lens_list = []
@@ -119,26 +170,35 @@ class Model():
 
     def new_source(self, source_to_add):
         """
-        Docstring Here
+        Add a new source. 
+
+        Args:
+            source_to_add: the source to add
         """
         self._source = source_to_add
 
     def new_lens(self, lens_to_add):
         """
-        Docstring Here
+        Add a new lens. 
+
+        Args:
+            lens_to_add: the lens to add
         """
         self._lens_list.append(lens_to_add)
 
     def iterate_rays(self):
         """
-        Docstring Here
+        Simulate all rays for one timestep.
         """
         for ray in self._ray_list:
             ray.take_step()
 
     def run_simulation(self, steps_to_take):
         """
-        Docstring Here
+        Run the simulation for a defined number of steps. 
+
+        Args:
+            steps_to_take: number of steps to take passed as an int
         """
         current_step = 0
         while current_step < steps_to_take:
