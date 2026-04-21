@@ -44,19 +44,20 @@ class CommandLine():
                     user_input[i]=int(element)
                 except ValueError:
                     pass
+            user_input.append(None)
             try:
                 self.commands[user_input[0]]()
             except KeyError:
                 print('Invalid Command!')
             except TypeError:
                 try:
-                    self.commands[user_input[0]](user_input[1:])
+                    self.commands[user_input[0]](*user_input[1:])
                 except TypeError:
                     try:
-                        self.commands[user_input[0]][user_input[1]](user_input[2:])
+                        self.commands[user_input[0]][user_input[1]](*user_input[2:])
                     except TypeError:
                         try:
-                            self.commands[user_input[0]][user_input[1]][user_input[2]](user_input[3:])
+                            self.commands[user_input[0]][user_input[1]][user_input[2]](*user_input[3:])
                         except IndexError:
                             print('Not enough parameters!')
                         except (TypeError,KeyError):
