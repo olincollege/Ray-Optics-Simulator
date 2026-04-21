@@ -3,7 +3,7 @@ Defines class 'Viewer' which is used to visualize the simulation results in
 the Ray Optics Simulator Project
 """
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Ellipse
 
 # from controller import controller
 
@@ -43,18 +43,18 @@ class Viewer:
             )  # single_ray_coord_list format: [(x1,y1),(x2,y2),(x3,y3)]
             ax.plot(x_list, y_list, color=self._colormap["light"])
 
-        # ASSUMING ONLY 1 LENS RN
+        # ASSUMING ONLY 1 LENS
         lens_coords = (
-            model_data[0][1][1] - model_data[0][1][4] / 2,
-            model_data[0][1][2] - model_data[0][1][3] / 2,
+            model_data[0][1][1],
+            model_data[0][1][2]
         )
-        lens_rect = Rectangle(
+        lens_ellipse = Ellipse(
             lens_coords,
-            model_data[0][1][4],
-            model_data[0][1][3],
+            model_data[0][1][4]*model_data[0][1][5],
+            model_data[0][1][3]*model_data[0][1][5],
             facecolor=self._colormap[model_data[0][1][0]]
         )
-        ax.add_patch(lens_rect)
+        ax.add_patch(lens_ellipse)
 
         ax.set_title("Simulation Results")
         ax.set_xlabel("X Axis (meters)")
