@@ -111,7 +111,7 @@ class IdealLens(Model):
 
 class LightSource(Model):
     """
-    Implement the LightSource class.
+    Implement the LightSource subclass in the Model superclass.
 
     A class to define source types and help
     generate lists of ray objects in accordance
@@ -148,7 +148,7 @@ class LightSource(Model):
 
 class LightRay(Model):
     """
-    Implement the lightray subclass.
+    Implement the LightRay subclass in the Model superclass.
 
     Implement a class for individual lightrays.
     Contain all relevant information for a lightray
@@ -245,10 +245,3 @@ class LightRay(Model):
         self._current_y_pos += self._step_size * math.sin(
             math.degrees(self._angle)
         )
-
-
-"""
-TO DO:
-Add code to model class to tie it all together
-- Add code to model class to pass neccessary arguments to subclasses to create lenses and whatnot (esp positions and such)
-"""
