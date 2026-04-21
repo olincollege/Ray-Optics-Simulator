@@ -16,6 +16,17 @@ class Model():
     _lens_list = []
     _ray_list = []
 
+    def __init__(self):
+        self.function_dict={}
+        self.function_dict['help']=self._help
+        self.function_dict['create']={'source':LightSource,'lens':IdealLens}
+        self.function_dict['run']=self.run_simulation
+        
+
+    def _help(self, *_):
+        print(f'Command List: {list(self.function_dict)}')
+
+
     def new_source(self, source_to_add):
         """
         Add a new source. 
@@ -106,6 +117,8 @@ class IdealLens(Model):
         self.axis2 = axis2
         self.radius = radius
         self.index_of_refraction = index_of_refraction
+        
+        
         Model.new_lens(model_object, self)
 
 

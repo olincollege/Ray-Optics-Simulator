@@ -127,12 +127,12 @@ class test_model():
         def __repr__(self):
             return(f'I really like {self.x} but NOT {self.y}.')
 
-main_test=test_model()
-app=CommandLine()
+# main_test=test_model()
+# app=CommandLine()
 
-app.commands['hello']=create_function(1)
-app.commands['ping']=create_function(2)
-app.commands['model']=main_test.function_dict
+# app.commands['hello']=create_function(1)
+# app.commands['ping']=create_function(2)
+# app.commands['model']=main_test.function_dict
 
-app.main_loop()
+# app.main_loop()
 
