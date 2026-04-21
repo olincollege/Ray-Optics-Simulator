@@ -22,14 +22,14 @@ class CommandLine():
     """
     commands={}
     quit_var=0
-    
+
     def __init__(self):
         self.commands['quit']=self._quit_func
         self.commands['help']=self._help
 
     def _quit_func(self):
         self.quit_var=1
-    
+
     def _help(self):
         print(f'Command List: {list(self.commands)}')
 
@@ -46,24 +46,25 @@ class CommandLine():
                     pass
             try:
                 self.commands[user_input[0]]()
-            except KeyError: 
+            except KeyError:
                 print('Invalid Command!')
-            except TypeError: 
+            except TypeError:
                 try:
                     self.commands[user_input[0]](user_input[1:])
                 except TypeError:
-                    try: self.commands[user_input[0]][user_input[1]](user_input[2:])
+                    try:
+                        self.commands[user_input[0]][user_input[1]](user_input[2:])
                     except TypeError:
-                        try: self.commands[user_input[0]][user_input[1]][user_input[2]](user_input[3:])
-                        except IndexError: 
+                        try:
+                            self.commands[user_input[0]][user_input[1]][user_input[2]](user_input[3:])
+                        except IndexError:
                             print('Not enough parameters!')
                         except (TypeError,KeyError):
                             print('Invalid Command, Please Try Again!')
-            
+      
 
 
 class test_model():
-
     def __init__(self):
         self.lens_list=[]
         self.laser_list=[]
