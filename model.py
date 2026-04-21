@@ -20,11 +20,22 @@ class Model():
         self.function_dict = {}
         self.function_dict['help'] = self._help
         self.function_dict['create'] = {'source':LightSource,'lens':IdealLens}
-        self.function_dict['create']['help'] = {'source':LightSource._help}
         self.function_dict['run'] = self.run_simulation
+        self.function_dict['debug'] = self._print
 
-    def _help(self, *_):
-        print(f'Command List: {list(self.function_dict)}')
+    def _print(self):
+        print(f'lens list: {self._lens_list}')
+        print(f'ray list: {self._ray_list}')
+        print(f'source: {self._source}')
+
+    def _help(self, command=None):
+        match command:
+            case 'source':
+                print('5 Inputs: type, xpos, ypos, step_size, angle_step_size')
+            case 'lens':
+                print('6 Inputs: xpos, ypos, axis1, axis2, radius, refraction_index')
+            case _:
+                print(f'Command List: {list(self.function_dict)}')
 
     def new_source(self, source_to_add):
         """
@@ -67,7 +78,8 @@ class Model():
         Simulate all rays for one timestep.
         """
         for ray in self._ray_list:
-            ray.take_step()
+            ray.take_step(self._lens_list)
+        
 
     def run_simulation(self, steps_to_take):
         """
@@ -80,7 +92,7 @@ class Model():
         while current_step < steps_to_take:
             self.iterate_rays()
             current_step += 1
-        return [self._source, self._lens_list, self._ray_list]
+        return [self._lens_list, self._ray_list, self._source]
 
 class IdealLens(Model):
     """
@@ -96,6 +108,7 @@ class IdealLens(Model):
     axis2 = None
     radius = None
     index_of_refraction = None
+    model_data=None
 
     def __init__(self, xpos, ypos, axis1, axis2, radius, index_of_refraction, model_object):
         """
@@ -131,9 +144,10 @@ class LightSource(Model):
 
     _type = None
 
-    def __init__(self, type_of_source, model_object):
+    def __init__(self, type_of_source, init_x, init_y, step_size, angle_step_size, model_object):
         self._type = type_of_source
         Model.new_source(model_object, self)
+        self.generate_ray_list(init_x, init_y, step_size, angle_step_size, model_object)
 
     def generate_ray_list(self, init_x_pos, init_y_pos, step_size, angle_step_size, model_object):
         """
@@ -170,7 +184,7 @@ class LightRay(Model):
     _last_medium = None
     _current_x_pos = 0
     _current_y_pos = 0
-    _pos_list = []
+    pos_list = []
     _step_size = 0.001
     _relevant_lens_index = None
 
@@ -203,10 +217,10 @@ class LightRay(Model):
             converted_y_coord = self._current_y_pos - lens.ypos_center
             radius = (
                 converted_x_coord
-                ^ 2 / lens.axis1
-                ^ 2 + converted_y_coord
-                ^ 2 / lens.axis2
-                ^ 2
+                ** 2 / lens.axis1
+                ** 2 + converted_y_coord
+                ** 2 / lens.axis2
+                ** 2
             )
             if radius <= lens.radius:
                 new_medium_index = lens.index_of_refraction
@@ -247,7 +261,7 @@ class LightRay(Model):
         Args:
             lens_list: a list of lenses in the simulation
         """
-        self._pos_list.append([self._current_x_pos, self._current_y_pos])
+        self.pos_list.append((self._current_x_pos, self._current_y_pos))
         self.update_medium(lens_list)
         self.update_angle(lens_list)
         self._current_x_pos += self._step_size * math.cos(
@@ -257,9 +271,9 @@ class LightRay(Model):
             math.degrees(self._angle)
         )
 
-
 """
 TO DO:
 Add code to model class to tie it all together
 - Add code to model class to pass neccessary arguments to subclasses to create lenses and whatnot (esp positions and such)
 """
+

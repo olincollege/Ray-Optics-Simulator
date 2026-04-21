@@ -37,24 +37,23 @@ class Viewer:
         """
         fig, ax = plt.subplots()
 
-        for single_ray_coord_list in model_data[1]:
+        for light_ray in model_data[1]:
             x_list, y_list = zip(
-                *single_ray_coord_list
+                *light_ray.pos_list
             )  # single_ray_coord_list format: [(x1,y1),(x2,y2),(x3,y3)]
             ax.plot(x_list, y_list, color=self._colormap["light"])
-
         # ASSUMING ONLY 1 LENS RN
-        lens_coords = (
-            model_data[0][1][1] - model_data[0][1][4] / 2,
-            model_data[0][1][2] - model_data[0][1][3] / 2,
-        )
-        lens_rect = Rectangle(
-            lens_coords,
-            model_data[0][1][4],
-            model_data[0][1][3],
-            facecolor=self._colormap[model_data[0][1][0]]
-        )
-        ax.add_patch(lens_rect)
+        #lens_coords = (
+        #    model_data[0][1][1] - model_data[0][1][4] / 2,
+        #    model_data[0][1][2] - model_data[0][1][3] / 2,
+        #)
+        #lens_rect = Rectangle(
+        #    lens_coords,
+        #    model_data[0][1][4],
+        #    model_data[0][1][3],
+        #    facecolor=self._colormap[model_data[0][1][0]]
+        #)
+        #ax.add_patch(lens_rect)
 
         ax.set_title("Simulation Results")
         ax.set_xlabel("X Axis (meters)")
