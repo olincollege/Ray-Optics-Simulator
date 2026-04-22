@@ -77,10 +77,8 @@ class Model():
         """
         Simulate all rays for one timestep.
         """
-        print(len(self._ray_list),'rays')
         for ray in self._ray_list:
             ray.take_step(self._lens_list)
-            
         
 
     def run_simulation(self, steps_to_take):
@@ -182,14 +180,6 @@ class LightRay(Model):
     within the object and methods to simulate them.
     """
 
-    _current_medium = None
-    _last_medium = None
-    _current_x_pos = 0
-    _current_y_pos = 0
-    pos_list = []
-    _step_size = 0.001
-    _relevant_lens_index = None
-
     def __init__(self, init_angle, init_x_pos, init_y_pos, step_size):
         """
         Initialize a ray object.
@@ -200,11 +190,14 @@ class LightRay(Model):
             init_y_pos: initial y position for a ray
             step_size: how large of step sizes are taken in simulation
         """
+        self.pos_list=[]
         self._angle = init_angle
         self._current_x_pos = init_x_pos
         self._current_y_pos = init_y_pos
         self._step_size = step_size
-
+        self._relevant_lens_index = None
+        self._current_medium = None
+        self._last_medium = None
     def update_medium(self, lens_list):
         """
         Detect if a ray is within a lens or
@@ -240,22 +233,20 @@ class LightRay(Model):
         if self._last_medium in (None, self._current_medium):
             return
 
-        relevant_lens = lens_list(self._relevant_lens_index)
+        relevant_lens = lens_list[self._relevant_lens_index]
         converted_x_coord = self._current_x_pos - relevant_lens.xpos_center
         converted_y_coord = self._current_y_pos - relevant_lens.ypos_center
         angle_to_center = math.atan(converted_y_coord / converted_x_coord)
-
+        #ratio = (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle))
+        print(math.sin(math.radians(self._angle)))
         self._angle = (
             math.degrees(angle_to_center)
-            + 90
+            +90
             + math.degrees(
                 math.asin(
-                    (self._last_medium / self._current_medium)
-                    * math.sin(math.radians(self._angle))
-                )
+                    (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle)))
             )
-        ) % 360
-
+            ) % 360
     def take_step(self, lens_list):
         """
         Simulate a ray for a single step.

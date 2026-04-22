@@ -26,7 +26,7 @@ class CommandLine():
         model_data = self.model_instance.run_simulation(steps)
         print('SIMULATION FINISHED')
         self.view_instance.generate_sim_view(model_data)
-        print('SIMULATION PRINTED')
+        print('SIMULATION RENDERED')
 
     def main_loop(self):
         """
