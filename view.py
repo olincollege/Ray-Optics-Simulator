@@ -45,16 +45,19 @@ class Viewer:
 
         # ASSUMING ONLY 1 LENS
         lens_list=model_data[0]
-        lens_coords = (
-            lens_list[0].xpos_center,
-            lens_list[0].ypos_center
-        )
-        lens_ellipse = Ellipse(
-            lens_coords,
-            lens_list[0].axis1, lens_list[0].axis2,
-            #facecolor=self._colormap[model_data[0][1][0]]
-        )
-        ax.add_patch(lens_ellipse)
+        for lens in lens_list:
+            lens_ellipse=Ellipse((lens.xpos_center,lens.ypos_center),lens.axis1, lens.axis2)
+            ax.add_patch(lens_ellipse)
+        #lens_coords = (
+        #    lens_list[0].xpos_center,
+        #    lens_list[0].ypos_center
+        #)
+        #lens_ellipse = Ellipse(
+        #    lens_coords,
+        #    lens_list[0].axis1, lens_list[0].axis2,
+        #    #facecolor=self._colormap[model_data[0][1][0]]
+        #)
+        #ax.add_patch(lens_ellipse)
 
         ax.set_title("Simulation Results")
         ax.set_xlabel("X Axis (meters)")
