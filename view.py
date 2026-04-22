@@ -36,12 +36,13 @@ class Viewer:
         to the file sim_result.png
         """
         fig, ax = plt.subplots()
-
+        #model_data[1]=[model_data[1][0]]
+        #print(model_data[1][0].pos_list)
         for light_ray in model_data[1]:
-            x_list, y_list = zip(
-                *light_ray.pos_list
-            )  # single_ray_coord_list format: [(x1,y1),(x2,y2),(x3,y3)]
-            ax.plot(x_list, y_list, color=self._colormap["light"])
+            #x_list, y_list = zip(
+            #    *light_ray.pos_list
+            #)  # single_ray_coord_list format: [(x1,y1),(x2,y2),(x3,y3)]
+            ax.plot(light_ray.pos_list, color=self._colormap["light"])
 
         # ASSUMING ONLY 1 LENS
         #lens_list=model_data[0]

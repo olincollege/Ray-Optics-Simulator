@@ -14,6 +14,6 @@ controller.view_instance=viewer
 # CODE TO TEST FULL PIPELINE
 controller.commands['model']['create']['lens'](100, 0, 1, 1, 1, 1, model)
 controller.commands['model']['create']['source']('standard', 0, 0, .01, 10, model)
-controller.commands['run'](400)
+controller.commands['run'](10)
 
 controller.main_loop()

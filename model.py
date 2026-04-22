@@ -77,8 +77,10 @@ class Model():
         """
         Simulate all rays for one timestep.
         """
+        print(len(self._ray_list),'rays')
         for ray in self._ray_list:
             ray.take_step(self._lens_list)
+            
         
 
     def run_simulation(self, steps_to_take):
@@ -165,7 +167,7 @@ class LightSource(Model):
             return
         angle = 0
         ray_list = []
-        while angle <= 360:
+        while angle < 360:
             ray_list.append(LightRay(angle, init_x_pos, init_y_pos, step_size))
             angle += angle_step_size
         Model.new_ray_list(model_object, ray_list)
@@ -265,10 +267,10 @@ class LightRay(Model):
         self.update_medium(lens_list)
         self.update_angle(lens_list)
         self._current_x_pos += self._step_size * math.cos(
-            math.degrees(self._angle)
+            math.radians(self._angle)
         )
         self._current_y_pos += self._step_size * math.sin(
-            math.degrees(self._angle)
+            math.radians(self._angle)
         )
 
 """
