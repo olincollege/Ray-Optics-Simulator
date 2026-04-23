@@ -162,13 +162,15 @@ class LightSource(Model):
             raise ValueError("Invalid Lightsource Type")
         self._type = type_of_source
 
-        
+        #Build Light Ray List
         Model.new_source(model_object, self)
         angle = 0
         ray_list = []
         while angle < 360:
             ray_list.append(LightRay(angle, init_x, init_y, step_size))
             angle += angle_step_size
+
+        #Send Light Ray List to Model
         Model.new_ray_list(model_object, ray_list)
 
 
