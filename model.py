@@ -145,13 +145,8 @@ class LightSource(Model):
     _type = None
 
     def __init__(self, type_of_source, init_x, init_y, step_size, angle_step_size, model_object):
-        self._type = type_of_source
-        Model.new_source(model_object, self)
-        self.generate_ray_list(init_x, init_y, step_size, angle_step_size, model_object)
-
-    def generate_ray_list(self, init_x_pos, init_y_pos, step_size, angle_step_size, model_object):
         """
-        Generate a list of rays in accordance
+        Initialize LightSource class and generate a list of rays in accordance
         to source type.
 
         Args:
@@ -161,12 +156,18 @@ class LightSource(Model):
             angle_step_size: the step size of angle to generate rays with
             model_object: the model to add the rays to
         """
-        if self._type != "standard":
-            return
+
+        #Set Lightsource Type (currently on)
+        if type_of_source != "standard":
+            raise ValueError("Invalid Lightsource Type")
+        self._type = type_of_source
+
+        
+        Model.new_source(model_object, self)
         angle = 0
         ray_list = []
         while angle < 360:
-            ray_list.append(LightRay(angle, init_x_pos, init_y_pos, step_size))
+            ray_list.append(LightRay(angle, init_x, init_y, step_size))
             angle += angle_step_size
         Model.new_ray_list(model_object, ray_list)
 
