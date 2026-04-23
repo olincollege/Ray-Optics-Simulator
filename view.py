@@ -19,7 +19,7 @@ class Viewer:
         """
         self._colormap = {
             "light": "gold",
-            "Empty": "lightcyan",
+            "ideal": "lightcyan",
             "LENS_TYPE_2": "mistyrose",
         }
         self.function_dict = {}
@@ -35,6 +35,7 @@ class Viewer:
         It is provided simulation data via the variable model_data. The plot is saved 
         to the file sim_result.png
         """
+        plt.style.use('dark_background')
         fig, ax = plt.subplots()
         #model_data[1]=[model_data[1][1]]
         for light_ray in model_data[1]:
@@ -46,7 +47,7 @@ class Viewer:
         # ASSUMING ONLY 1 LENS
         lens_list=model_data[0]
         for lens in lens_list:
-            lens_ellipse=Ellipse((lens.xpos_center,lens.ypos_center),lens.axis1, lens.axis2)
+            lens_ellipse=Ellipse((lens.xpos_center,lens.ypos_center),lens.axis1, lens.axis2,facecolor=self._colormap[lens.type])
             ax.add_patch(lens_ellipse)
         #lens_coords = (
         #    lens_list[0].xpos_center,
@@ -58,7 +59,7 @@ class Viewer:
         #    #facecolor=self._colormap[model_data[0][1][0]]
         #)
         #ax.add_patch(lens_ellipse)
-
+        
         ax.set_title("Simulation Results")
         ax.set_xlabel("X Axis (meters)")
         ax.set_ylabel("Y Axis (meters)")

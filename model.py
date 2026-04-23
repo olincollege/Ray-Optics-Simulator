@@ -130,7 +130,7 @@ class IdealLens(Model):
         self.radius = radius
         self.index_of_refraction = index_of_refraction
         Model.new_lens(model_object, self)
-
+        self.type='ideal'
 
 
 class LightSource(Model):
@@ -237,16 +237,21 @@ class LightRay(Model):
         converted_x_coord = self._current_x_pos - relevant_lens.xpos_center
         converted_y_coord = self._current_y_pos - relevant_lens.ypos_center
         angle_to_center = math.atan(converted_y_coord / converted_x_coord)
-        #ratio = (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle))
-        print(math.sin(math.radians(self._angle)))
-        self._angle = (
-            math.degrees(angle_to_center)
-            +90
-            + math.degrees(
-                math.asin(
-                    (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle)))
+        ratio = (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle))
+        
+        if abs(ratio)<=1:
+            self._angle = (
+                math.degrees(angle_to_center)
+                #+90
+                + math.degrees(
+                    math.asin(
+                    #    (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle)))
+                    ratio
+                )
+                ) % 360
             )
-            ) % 360
+        else:
+             self._angle= (2 * math.degrees(angle_to_center) - self._angle + 180)%360
     def take_step(self, lens_list):
         """
         Simulate a ray for a single step.
