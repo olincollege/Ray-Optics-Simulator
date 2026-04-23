@@ -142,8 +142,6 @@ class LightSource(Model):
     with the source type.
     """
 
-    _type = None
-
     def __init__(self, type_of_source, init_x, init_y, step_size, angle_step_size, model_object):
         """
         Initialize LightSource class and generate a list of rays in accordance
