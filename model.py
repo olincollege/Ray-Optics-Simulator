@@ -163,10 +163,10 @@ class LightSource(Model):
         """
         if self._type != "standard":
             return
-        angle = 0
+        angle = -90
         ray_list = []
-        while angle < 360:
-            ray_list.append(LightRay(angle, init_x_pos, init_y_pos, step_size))
+        while angle < 90:
+            ray_list.append(LightRay(angle%360, init_x_pos, init_y_pos, step_size))
             angle += angle_step_size
         Model.new_ray_list(model_object, ray_list)
 
@@ -239,19 +239,20 @@ class LightRay(Model):
         angle_to_center = math.atan(converted_y_coord / converted_x_coord)
         ratio = (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle))
         
-        if abs(ratio)<=1:
-            self._angle = (
-                math.degrees(angle_to_center)
-                #+90
-                + math.degrees(
-                    math.asin(
-                    #    (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle)))
-                    ratio
-                )
-                ) % 360
+        #if abs(ratio)<=1:
+        #if True:
+        self._angle = (
+            math.degrees(angle_to_center)
+            #+90
+            + math.degrees(
+                math.asin(
+                #    (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle)))
+                ((ratio+1)%2)-1
             )
-        else:
-             self._angle= (2 * math.degrees(angle_to_center) - self._angle + 180)%360
+            ) % 360
+        )
+        #else:
+             #self._angle = (2 * math.degrees(angle_to_center) - self._angle + 180)%360
     def take_step(self, lens_list):
         """
         Simulate a ray for a single step.
