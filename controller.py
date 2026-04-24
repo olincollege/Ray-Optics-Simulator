@@ -26,9 +26,9 @@ class CommandLine():
                 print("Syntax: 'run <timesteps>'")
             case _:
                 print(
-                    "You first need to specify model parameters using the 'model'"
+                    "help\nYou first need to specify model parameters using the 'model'"
                     " command.\nThe program lets you specify light source parameters"
-                    "like position and ray density and lens parameters\nlike refractivity"
+                    " like position and ray density and lens parameters\nlike refractivity"
                     " and size (use 'help model' for more precise information on inputs)\n"
                     "You can then use the 'run' command to run the simulation and plot the"
                     " results ('help run' can give more info on how to run the model)\n"
@@ -54,7 +54,7 @@ class CommandLine():
         Takes in and formats user input.
         """
         if _input is None:
-            _input=input('Enter a command: ').split(' ')
+            _input=input('Enter a command: ')
         self._cmd_to_func(_input.split(' '))
     
     def debug_input(self, _input):

@@ -29,18 +29,26 @@ class Model():
         print(f'source: {self._source}')
 
     def _help(self, command=None):
-        match command:
-            case 'source':
-                print('5 Inputs: type, xpos, ypos, step_size, angle_step_size')
-            case 'lens':
-                print('6 Inputs: xpos, ypos, axis1, axis2, radius, refraction_index')
-            case 'create':
-                print("create format: 'model create lens <params>")
-                print("Type 'model help lens' or 'model help source' for more information.")
-            case _:
-                print(f'Command List: {list(self.function_dict)}')
-                print("Type 'model help create' for help with creating sources or lens.")
-
+        print(
+                "\nTo run the model it is necessary to specify light source parameters"
+                " and lens parameters\nThis is done through 'model create source' and"
+                " 'model create lens'\n\nSource expects a 5 inputs after the command: "
+                "lens_type, x_position, y_position, ray_step_size, ray_angle_step_size\n"
+                "   lens_type currently only supports 'standard' which represents an ideal lens.\n"
+                "   x_position is in meters and should ideally be between -1 and 1\n"
+                "   y_position is in meters and should ideally be between 0 and 2\n"
+                "   Ray_step_size represents how far to step each light ray in the simulation (meters).\n"
+                "   Ray_angle_step_size represents the rotation between each light ray sent out (degrees)\n"
+                "Example light source command: 'model create source standard 0 0 0.001 1'\n\n"
+                "Lens expects 6 inputs after the command: "
+                "x_position, y_position, width, height, radius, refraction_index\n"
+                "   x_position and y_position give the coordinates for the center of the lens in meters\n"
+                "   width is the thickness of the lens (meters)\n"
+                "   height is the total height of the lens (meters)\n"
+                "   radius FIX ME WHAT IS RADIUS?????\n"
+                "   index_of_refraction represents the index of refraction for the lens\n"
+                "Example lens command: 'model create lens 1 0 0.125 0.5 0.25 1.5'"
+                )
 
     def new_source(self, source_to_add):
         """
