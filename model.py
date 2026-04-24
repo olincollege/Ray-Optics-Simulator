@@ -163,7 +163,7 @@ class LightSource(Model):
             print('Step size cannot be 0')
             raise ValueError
 
-        #Set Lightsource Type (currently on)
+        #Set Lightsource Type (currently only supports 'standard')
         if type_of_source != "standard":
             raise ValueError("Invalid Lightsource Type")
         self._type = type_of_source

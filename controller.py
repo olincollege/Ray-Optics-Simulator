@@ -8,6 +8,9 @@ class CommandLine():
     view_instance=None
 
     def __init__(self):
+        """
+        Initializes basic commands: quit, help, and run
+        """
         self.commands['quit'] = self._quit_func
         self.commands['help'] = self._help
         self.commands['run'] = self._run_simulation
@@ -22,6 +25,9 @@ class CommandLine():
     def _run_simulation(self, steps=40):
         """
         Runs the current simulation and displays the data with the viewer
+
+        Args: 
+            steps: int, representing the amount of steps to run the simulation for
         """
         print('STARTING SIMULATION')
         model_data = self.model_instance.run_simulation(steps)
