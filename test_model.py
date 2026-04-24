@@ -11,7 +11,8 @@ def test_new_source():
     assert test_model._source==test_source
 
 def test_new_lens():
-    pass
+    test_model = Model()
+    test_lens = IdealLens()
 
 def test_new_ray():
     pass

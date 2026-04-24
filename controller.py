@@ -18,10 +18,14 @@ class CommandLine():
     def _quit_func(self):
         self.quit_var=1
 
-    def _help(self):
+    def _help(self, *input):
         print(f'Command List: {list(self.commands)}')
         print("Type 'model help' for more information on model commands.")
-
+        match input:
+            case 'model':
+                self.commands['model']['help']
+            case 'run':
+                print("Syntax: 'run <timesteps>'")
     def _run_simulation(self, steps=40):
         """
         Runs the current simulation and displays the data with the viewer
@@ -35,12 +39,16 @@ class CommandLine():
         self.view_instance.generate_sim_view(model_data)
         print('SIMULATION RENDERED')
 
+    def user_input(self):
+        return input('Enter a command: ').split(' ') 
+
+
     def main_loop(self):
         """
         Main loop for grabbing and using user inputs
         """
         while self.quit_var==0:
-            _cmd = input('Enter a command: ').split(' ') 
+            _cmd = self.user_input()
             # Clean up user input, unstring floats
             for i,element in enumerate(_cmd):
                 try:
