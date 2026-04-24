@@ -36,13 +36,15 @@ class CommandLine():
                 )
                 print(f"Command List: {list(self.commands)}")
 
-    def _run_simulation(self, steps=40):
+    def _run_simulation(self, steps):
         """
         Runs the current simulation and displays the data with the viewer
 
         Args: 
             steps: int, representing the amount of steps to run the simulation for
         """
+        if steps is None:
+            steps=40
         print('STARTING SIMULATION')
         model_data = self.model_instance.run_simulation(steps)
         print('SIMULATION FINISHED')
@@ -80,7 +82,7 @@ class CommandLine():
         if len(_cmd)>1:
             if _cmd[1]=='create':
                 _cmd.append(self.model_instance)
-        elif _cmd[0]=='help':
+        elif _cmd[0] in ['help', 'run']:
             _cmd.append(None)
         # ['model', 'create', 'lens', 1, 0, .125, .25, 2, model]
         try:
