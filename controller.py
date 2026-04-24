@@ -18,15 +18,15 @@ class CommandLine():
     def _quit_func(self):
         self.quit_var=1
 
-    def _help(self, *_input):
+    def _help(self, command=None):
         print(f'Command List: {list(self.commands)}')
         print("Type 'model help' for more information on model commands.")
-        print(_input)
-        match _input:
+        match command:
             case 'model':
                 self.commands['model']['help']()
             case 'run':
                 print("Syntax: 'run <timesteps>'")
+
     def _run_simulation(self, steps=40):
         """
         Runs the current simulation and displays the data with the viewer
@@ -83,7 +83,6 @@ class CommandLine():
                         self.commands[_cmd[0]][_cmd[1]][_cmd[2]](*_cmd[3:])
                     # IdealLens([1, 0, .125, .25, 2, model])
                     # This is the call of IdealLens with the provided parameters
-
                     except KeyError:
                         print('Invalid Command!')
                     except TypeError:
@@ -95,13 +94,9 @@ class CommandLine():
                             print(_cmd)
                             print('Invalid Command, Please Try Again!')
 
-                
-
-
     def main_loop(self):
         """
         Main loop for grabbing and using user inputs
         """
         while self.quit_var==0:
-            _cmd = self.user_input()
-            
+            self.user_input()
