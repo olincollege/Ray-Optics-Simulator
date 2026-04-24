@@ -51,12 +51,24 @@ class CommandLine():
 
     def user_input(self, _input=None):
         """
-        Takes in user input 
+        Takes in and formats user input.
         """
         if _input is None:
             _input=input('Enter a command: ').split(' ')
-        self._cmd_to_func(_input)
+        self._cmd_to_func(_input.split(' '))
     
+    def debug_input(self, _input):
+        """
+        takes input text to use in testing environment.
+        """
+        _cmd = _input.split(' ')
+        for i,element in enumerate(_cmd):
+            try:
+                _cmd[i]=float(element)
+            except ValueError:
+                pass
+        return(_cmd)
+
     def _cmd_to_func(self, _cmd):
         # Clean up user input, unstring floats
         for i,element in enumerate(_cmd):

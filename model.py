@@ -93,6 +93,7 @@ class Model():
         Args:
             steps_to_take: number of steps to take passed as an int
         """
+        steps_to_take=abs(steps_to_take)
         current_step = 0
         while current_step < steps_to_take:
             self.iterate_rays()
@@ -128,6 +129,8 @@ class IdealLens(Model):
             index_of_refraction: index of refraction of the lens
             model_object: the model to add the lens to
         """
+        if index_of_refraction<1 or axis1<=0 or axis2<=0 or radius<=0:
+            raise ValueError("INVALID INPUT")
         self.xpos_center = xpos
         self.ypos_center = ypos
         self.axis1 = axis1
@@ -159,9 +162,8 @@ class LightSource(Model):
             angle_step_size: the step size of angle to generate rays with
             model_object: the model to add the rays to
         """
-        if step_size==0 or angle_step_size==0:
-            print('Step size cannot be 0')
-            raise ValueError
+        if step_size<=0 or angle_step_size<=0:
+            raise ValueError("STEP SIZE AND ANGLE STEP SIZE NEEDS TO BE LARGER THAN 0")
 
         #Set Lightsource Type (currently only supports 'standard')
         if type_of_source != "standard":
