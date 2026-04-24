@@ -19,5 +19,10 @@ controller.commands['model']['create']['source']('standard', 0, 0, .001, 4, mode
 controller.commands['run'](1500)
 ###
 
-print("type 'help' for a list of commands.")
+print(
+    "Welcome to the Ray Optics Simulator Program \n"
+    "This programs lets you input parameters for an optics"
+    " simulation, run a simulation, and plot the results \n"
+    "Type 'help' for a list of commands and an explanation of the program!"
+    )
 controller.main_loop()

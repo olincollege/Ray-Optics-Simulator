@@ -18,14 +18,23 @@ class CommandLine():
     def _quit_func(self):
         self.quit_var=1
 
-    def _help(self, command=None):
-        print(f'Command List: {list(self.commands)}')
-        print("Type 'model help' for more information on model commands.")
+    def _help(self, command):
         match command:
             case 'model':
                 self.commands['model']['help']()
             case 'run':
                 print("Syntax: 'run <timesteps>'")
+            case _:
+                print(
+                    "You first need to specify model parameters using the 'model'"
+                    " command.\nThe program lets you specify light source parameters"
+                    "like position and ray density and lens parameters\nlike refractivity"
+                    " and size (use 'help model' for more precise information on inputs)\n"
+                    "You can then use the 'run' command to run the simulation and plot the"
+                    " results ('help run' can give more info on how to run the model)\n"
+                    "As a reminder here is the command list:"
+                )
+                print(f"Command List: {list(self.commands)}")
 
     def _run_simulation(self, steps=40):
         """
@@ -59,6 +68,8 @@ class CommandLine():
         if len(_cmd)>1:
             if _cmd[1]=='create':
                 _cmd.append(self.model_instance)
+        elif _cmd[0]=='help':
+            _cmd.append(None)
         # ['model', 'create', 'lens', 1, 0, .125, .25, 2, model]
         try:
             self.commands[_cmd[0]]()
