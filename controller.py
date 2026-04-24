@@ -17,6 +17,7 @@ class CommandLine():
 
     def _help(self):
         print(f'Command List: {list(self.commands)}')
+        print("Type 'model help' for more information on model commands.")
 
     def _run_simulation(self, steps=40):
         """
@@ -37,10 +38,9 @@ class CommandLine():
             # Clean up user input, unstring floats
             for i,element in enumerate(_cmd):
                 try:
-                    _cmd[i]=float(element)
+                    _cmd[i]=abs(float(element))
                 except ValueError:
                     pass
-
             # ['model', 'create', 'lens', 1, 0, .125, .25, 2]
             if len(_cmd)>1:
                 if _cmd[1]=='create':

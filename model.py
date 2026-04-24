@@ -34,8 +34,13 @@ class Model():
                 print('5 Inputs: type, xpos, ypos, step_size, angle_step_size')
             case 'lens':
                 print('6 Inputs: xpos, ypos, axis1, axis2, radius, refraction_index')
+            case 'create':
+                print("create format: 'model create lens <params>")
+                print("Type 'model help lens' or 'model help source' for more information.")
             case _:
                 print(f'Command List: {list(self.function_dict)}')
+                print("Type 'model help create' for help with creating sources or lens.")
+
 
     def new_source(self, source_to_add):
         """
@@ -154,6 +159,9 @@ class LightSource(Model):
             angle_step_size: the step size of angle to generate rays with
             model_object: the model to add the rays to
         """
+        if step_size==0 or angle_step_size==0:
+            print('Step size cannot be 0')
+            raise ValueError
 
         #Set Lightsource Type (currently on)
         if type_of_source != "standard":
