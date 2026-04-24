@@ -22,6 +22,8 @@ class Viewer:
             "ideal": "lightcyan",
             "LENS_TYPE_2": "mistyrose",
         }
+        self._x_range = [0,2]
+        self._y_range = [-1,1]
         self.function_dict = {}
         self.function_dict["help"] = self._help
         self.function_dict["generate"] = self.generate_sim_view
@@ -35,8 +37,12 @@ class Viewer:
         It is provided simulation data via the variable model_data. The plot is saved 
         to the file sim_result.png
         """
+        #Initialize plot
         plt.style.use('dark_background')
         fig, ax = plt.subplots()
+        ax.set_ylim(self._y_range)
+        ax.set_xlim(self._x_range)
+
         #model_data[1]=[model_data[1][1]]
         for light_ray in model_data[1]:
             x_list, y_list = zip(
