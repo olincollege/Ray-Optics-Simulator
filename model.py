@@ -20,7 +20,7 @@ class Model():
         self.function_dict = {}
         self.function_dict['help'] = self._help
         self.function_dict['create'] = {'source':LightSource,'lens':IdealLens}
-        self.function_dict['run'] = self.run_simulation
+        #self.function_dict['run'] = self.run_simulation
         self.function_dict['debug'] = self._print
 
     def _print(self):

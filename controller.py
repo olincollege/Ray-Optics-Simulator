@@ -18,12 +18,13 @@ class CommandLine():
     def _quit_func(self):
         self.quit_var=1
 
-    def _help(self, *input):
+    def _help(self, *_input):
         print(f'Command List: {list(self.commands)}')
         print("Type 'model help' for more information on model commands.")
-        match input:
+        print(_input)
+        match _input:
             case 'model':
-                self.commands['model']['help']
+                self.commands['model']['help']()
             case 'run':
                 print("Syntax: 'run <timesteps>'")
     def _run_simulation(self, steps=40):
@@ -39,8 +40,62 @@ class CommandLine():
         self.view_instance.generate_sim_view(model_data)
         print('SIMULATION RENDERED')
 
-    def user_input(self):
-        return input('Enter a command: ').split(' ') 
+    def user_input(self, _input=None):
+        """
+        Takes in user input 
+        """
+        if _input is None:
+            _input=input('Enter a command: ').split(' ')
+        self._cmd_to_func(_input)
+    
+    def _cmd_to_func(self, _cmd):
+        # Clean up user input, unstring floats
+        for i,element in enumerate(_cmd):
+            try:
+                _cmd[i]=abs(float(element))
+            except ValueError:
+                pass
+        # ['model', 'create', 'lens', 1, 0, .125, .25, 2]
+        if len(_cmd)>1:
+            if _cmd[1]=='create':
+                _cmd.append(self.model_instance)
+        # ['model', 'create', 'lens', 1, 0, .125, .25, 2, model]
+        try:
+            self.commands[_cmd[0]]()
+        except KeyError:
+            print('Invalid Command!')
+        except TypeError:
+            try:
+                self.commands[_cmd[0]](*_cmd[1:])
+                # self.commands['model'](['create', 'lens', 1, 0, .125, .25, 2, model])
+                # model.function_dict(['create', 'lens', 1, 0, .125, .25, 2, model])
+            except KeyError:
+                print('Invalid Command!')
+            except TypeError:
+                try:
+                    self.commands[_cmd[0]][_cmd[1]](*_cmd[2:])
+                    # model.function_dict['create'](['lens', 1, 0, .125, .25, 2, model])
+                    # {'source':LightSource,'lens':IdealLens}(['lens', 1, 0, .125, .25, 2, model])
+                except KeyError:
+                    print('Invalid Command!')
+                except TypeError:
+                    try:
+                        self.commands[_cmd[0]][_cmd[1]][_cmd[2]](*_cmd[3:])
+                    # IdealLens([1, 0, .125, .25, 2, model])
+                    # This is the call of IdealLens with the provided parameters
+
+                    except KeyError:
+                        print('Invalid Command!')
+                    except TypeError:
+                        try:
+                            self.commands[_cmd[0]][_cmd[1]][_cmd[2]][_cmd[3]](*_cmd[4:])
+                        except IndexError:
+                            print('Not enough parameters!')
+                        except (TypeError,KeyError):
+                            print(_cmd)
+                            print('Invalid Command, Please Try Again!')
+
+                
 
 
     def main_loop(self):
@@ -49,48 +104,4 @@ class CommandLine():
         """
         while self.quit_var==0:
             _cmd = self.user_input()
-            # Clean up user input, unstring floats
-            for i,element in enumerate(_cmd):
-                try:
-                    _cmd[i]=abs(float(element))
-                except ValueError:
-                    pass
-            # ['model', 'create', 'lens', 1, 0, .125, .25, 2]
-            if len(_cmd)>1:
-                if _cmd[1]=='create':
-                    _cmd.append(self.model_instance)
-            # ['model', 'create', 'lens', 1, 0, .125, .25, 2, model]
-            try:
-                self.commands[_cmd[0]]()
-            except KeyError:
-                print('Invalid Command!')
-            except TypeError:
-                try:
-                    self.commands[_cmd[0]](*_cmd[1:])
-                    # self.commands['model'](['create', 'lens', 1, 0, .125, .25, 2, model])
-                    # model.function_dict(['create', 'lens', 1, 0, .125, .25, 2, model])
-                except KeyError:
-                    print('Invalid Command!')
-                except TypeError:
-                    try:
-                        self.commands[_cmd[0]][_cmd[1]](*_cmd[2:])
-                        # model.function_dict['create'](['lens', 1, 0, .125, .25, 2, model])
-                        # {'source':LightSource,'lens':IdealLens}(['lens', 1, 0, .125, .25, 2, model])
-                    except KeyError:
-                        print('Invalid Command!')
-                    except TypeError:
-                        try:
-                            self.commands[_cmd[0]][_cmd[1]][_cmd[2]](*_cmd[3:])
-                        # IdealLens([1, 0, .125, .25, 2, model])
-                        # This is the call of IdealLens with the provided parameters
-
-                        except KeyError:
-                            print('Invalid Command!')
-                        except TypeError:
-                            try:
-                                self.commands[_cmd[0]][_cmd[1]][_cmd[2]][_cmd[3]](*_cmd[4:])
-                            except IndexError:
-                                print('Not enough parameters!')
-                            except (TypeError,KeyError):
-                                print(_cmd)
-                                print('Invalid Command, Please Try Again!')
+            
