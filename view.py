@@ -3,7 +3,7 @@ Defines class 'Viewer' which is used to visualize the simulation results in
 the Ray Optics Simulator Project
 """
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Ellipse
 
 # from controller import controller
 
@@ -19,9 +19,11 @@ class Viewer:
         """
         self._colormap = {
             "light": "gold",
-            "Empty": "lightcyan",
+            "ideal": "lightcyan",
             "LENS_TYPE_2": "mistyrose",
         }
+        self._x_range = [0,2]
+        self._y_range = [-1,1]
         self.function_dict = {}
         self.function_dict["help"] = self._help
         self.function_dict["generate"] = self.generate_sim_view
@@ -35,27 +37,36 @@ class Viewer:
         It is provided simulation data via the variable model_data. The plot is saved 
         to the file sim_result.png
         """
+        #Initialize plot
+        plt.style.use('dark_background')
         fig, ax = plt.subplots()
+        ax.set_ylim(self._y_range)
+        ax.set_xlim(self._x_range)
 
-        for single_ray_coord_list in model_data[1]:
+        #model_data[1]=[model_data[1][1]]
+        for light_ray in model_data[1]:
             x_list, y_list = zip(
-                *single_ray_coord_list
+                *light_ray.pos_list
             )  # single_ray_coord_list format: [(x1,y1),(x2,y2),(x3,y3)]
-            ax.plot(x_list, y_list, color=self._colormap["light"])
+            ax.plot(x_list,y_list, color=self._colormap["light"])
 
-        # ASSUMING ONLY 1 LENS RN
-        lens_coords = (
-            model_data[0][1][1] - model_data[0][1][4] / 2,
-            model_data[0][1][2] - model_data[0][1][3] / 2,
-        )
-        lens_rect = Rectangle(
-            lens_coords,
-            model_data[0][1][4],
-            model_data[0][1][3],
-            facecolor=self._colormap[model_data[0][1][0]]
-        )
-        ax.add_patch(lens_rect)
-
+        # ASSUMING ONLY 1 LENS
+        lens_list=model_data[0]
+        for lens in lens_list:
+            print(lens.radius, lens.axis1, lens.axis2)
+            lens_ellipse=Ellipse((lens.xpos_center,lens.ypos_center),lens.axis1*lens.radius*2, lens.axis2*lens.radius*2,facecolor=self._colormap[lens.type])
+            ax.add_patch(lens_ellipse)
+        #lens_coords = (
+        #    lens_list[0].xpos_center,
+        #    lens_list[0].ypos_center
+        #)
+        #lens_ellipse = Ellipse(
+        #    lens_coords,
+        #    lens_list[0].axis1, lens_list[0].axis2,
+        #    #facecolor=self._colormap[model_data[0][1][0]]
+        #)
+        #ax.add_patch(lens_ellipse)
+        
         ax.set_title("Simulation Results")
         ax.set_xlabel("X Axis (meters)")
         ax.set_ylabel("Y Axis (meters)")

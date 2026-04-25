@@ -88,3 +88,5 @@ a.hit_test()
 print(a)
 print(a.angle)
 
+print('test')
+print(3^6)

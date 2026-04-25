@@ -1,137 +1,127 @@
-def create_function(id):
-    """
-    Returns a pre-made function based on a given ID, for testing purposes
-
-    Args:
-        id, int to choose which function to return
-    """
-    match id:
-        case 1:
-            def temp_function():
-                print('hello world')
-        case 2:
-            def temp_function():
-                print('pong')
-    return temp_function
-
-
-
 class CommandLine():
     """
     Creates an instance of a command line to interact with the model
     """
     commands={}
     quit_var=0
-    
+    model_instance=None
+    view_instance=None
+
     def __init__(self):
-        self.commands['quit']=self._quit_func
-        self.commands['help']=self._help
+        """
+        Initializes basic commands: quit, help, and run
+        """
+        self.commands['quit'] = self._quit_func
+        self.commands['help'] = self._help
+        self.commands['run'] = self._run_simulation
 
     def _quit_func(self):
         self.quit_var=1
+
+    def _help(self, command):
+        match command:
+            case 'model':
+                self.commands['model']['help']()
+            case 'run':
+                print("Syntax: 'run <timesteps>'")
+            case _:
+                print(
+                    "help\nYou first need to specify model parameters using the 'model'"
+                    " command.\nThe program lets you specify light source parameters"
+                    " like position and ray density and lens parameters\nlike refractivity"
+                    " and size (use 'help model' for more precise information on inputs)\n"
+                    "You can then use the 'run' command to run the simulation and plot the"
+                    " results ('help run' can give more info on how to run the model)\n"
+                    "As a reminder here is the command list:"
+                )
+                print(f"Command List: {list(self.commands)}")
+
+    def _run_simulation(self, steps):
+        """
+        Runs the current simulation and displays the data with the viewer
+
+        Args: 
+            steps: int, representing the amount of steps to run the simulation for
+        """
+        if steps is None:
+            steps=40
+        print('STARTING SIMULATION')
+        model_data = self.model_instance.run_simulation(steps)
+        print('SIMULATION FINISHED')
+        self.view_instance.generate_sim_view(model_data)
+        print('SIMULATION RENDERED')
+
+    def user_input(self, _input=None):
+        """
+        Takes in and formats user input.
+        """
+        if _input is None:
+            _input=input('Enter a command: ')
+        self._cmd_to_func(_input.split(' '))
     
-    def _help(self):
-        print(f'Command List: {list(self.commands)}')
+    def debug_input(self, _input):
+        """
+        takes input text to use in testing environment.
+        """
+        _cmd = _input.split(' ')
+        for i,element in enumerate(_cmd):
+            try:
+                _cmd[i]=float(element)
+            except ValueError:
+                pass
+        return(_cmd)
+
+    def _cmd_to_func(self, _cmd):
+        # Clean up user input, unstring floats
+        for i,element in enumerate(_cmd):
+            try:
+                _cmd[i]=abs(float(element))
+            except ValueError:
+                pass
+        # ['model', 'create', 'lens', 1, 0, .125, .25, 2]
+        if len(_cmd)>1:
+            if _cmd[1]=='create':
+                _cmd.append(self.model_instance)
+        elif _cmd[0] in ['help', 'run']:
+            _cmd.append(None)
+        # ['model', 'create', 'lens', 1, 0, .125, .25, 2, model]
+        try:
+            self.commands[_cmd[0]]()
+        except KeyError:
+            print('Invalid Command!')
+        except TypeError:
+            try:
+                self.commands[_cmd[0]](*_cmd[1:])
+                # self.commands['model'](['create', 'lens', 1, 0, .125, .25, 2, model])
+                # model.function_dict(['create', 'lens', 1, 0, .125, .25, 2, model])
+            except KeyError:
+                print('Invalid Command!')
+            except TypeError:
+                try:
+                    self.commands[_cmd[0]][_cmd[1]](*_cmd[2:])
+                    # model.function_dict['create'](['lens', 1, 0, .125, .25, 2, model])
+                    # {'source':LightSource,'lens':IdealLens}(['lens', 1, 0, .125, .25, 2, model])
+                except KeyError:
+                    print('Invalid Command!')
+                except TypeError:
+                    try:
+                        self.commands[_cmd[0]][_cmd[1]][_cmd[2]](*_cmd[3:])
+                    # IdealLens([1, 0, .125, .25, 2, model])
+                    # This is the call of IdealLens with the provided parameters
+                    except KeyError:
+                        print('Invalid Command!')
+                    except TypeError:
+                        try:
+                            self.commands[_cmd[0]][_cmd[1]][_cmd[2]][_cmd[3]](*_cmd[4:])
+                        except IndexError:
+                            print('Not enough parameters!')
+                        except (TypeError,KeyError):
+                            print(_cmd)
+                            print('Invalid Command, Please Try Again!')
 
     def main_loop(self):
         """
         Main loop for grabbing and using user inputs
         """
         while self.quit_var==0:
-            user_input = input('Enter a command: ').split(' ')
-            for i,element in enumerate(user_input):
-                try:
-                    user_input[i]=int(element)
-                except ValueError:
-                    pass
-            try:
-                self.commands[user_input[0]]()
-            except KeyError: 
-                print('Invalid Command!')
-            except TypeError: 
-                try:
-                    self.commands[user_input[0]](user_input[1:])
-                except TypeError:
-                    try: self.commands[user_input[0]][user_input[1]](user_input[2:])
-                    except TypeError:
-                        try: self.commands[user_input[0]][user_input[1]][user_input[2]](user_input[3:])
-                        except IndexError: 
-                            print('Not enough parameters!')
-                        except (TypeError,KeyError):
-                            print('Invalid Command, Please Try Again!')
-            
-
-
-class test_model():
-
-    def __init__(self):
-        self.lens_list=[]
-        self.laser_list=[]
-        self.function_dict={}
-        self.function_dict['help']=self._help
-        self.function_dict['create']={'lens':self.new_lens,'laser':self.new_laser}
-        self.function_dict['edit']={'lens':self.edit_lens,'laser':self.edit_laser}
-        self.function_dict['print']={'lens':self.print_lens,'laser':self.print_laser}
-        self.id=0
-
-    def _help(self, _=None):
-        print(f'Model Command List: {list(self.function_dict)}')
-
-    def print_lens(self, index=[]):
-        if index==[]:
-            print(self.lens_list)
-        else:
-            print(self.lens_list[index[0]])
-    
-    def print_laser(self,index=[]):
-        if index==[]:
-            print(self.laser_list)
-        else:
-            print(self.laser_list[index[0]])
-
-    def edit_lens(self,commands):
-        self.lens_list[commands.pop(0)].function_dict[commands[0]](commands[1:])
-    
-    def edit_laser(self,commands):
-        self.laser_list[commands.pop(0)].function_dict[commands[0]](commands[1:])
-    
-    def new_lens(self,commands):
-        self.lens_list.append(self.test_class(commands[0],commands[1]))
-    
-    def new_laser(self,commands):
-        self.laser_list.append(self.test_class(commands[0],commands[1]))
-    
-    class test_class():
-        """
-        Test class for debugging command line
-        """
-        
-        def __init__(self,x,y):
-            self.x=x; self.y=y
-            self.function_dict={}
-            self.function_dict['add']=self.add
-            self.function_dict['subtract']=self.subtract
-            self.function_dict['set']=self.set
-
-
-        def add(self,commands):
-            self.x+=commands[0]; self.y+=commands[1]
-
-        def subtract(self,commands):
-            self.x+=commands[0]; self.y+=commands[1]
-        
-        def set(self,commands):
-            self.x=commands[0]; self.y=commands[1]
-
-        def __repr__(self):
-            return(f'I really like {self.x} but NOT {self.y}.')
-
-main_test=test_model()
-app=CommandLine()
-
-app.commands['hello']=create_function(1)
-app.commands['ping']=create_function(2)
-app.commands['model']=main_test.function_dict
-
-app.main_loop()
-
+            self.user_input()
