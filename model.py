@@ -45,7 +45,7 @@ class Model():
                 "   x_position and y_position give the coordinates for the center of the lens in meters\n"
                 "   width is the thickness of the lens (meters)\n"
                 "   height is the total height of the lens (meters)\n"
-                "   radius FIX ME WHAT IS RADIUS?????\n"
+                "   radius acts as a multiplier for the axis, it is reccomended to set this to 1\n"
                 "   index_of_refraction represents the index of refraction for the lens\n"
                 "Example lens command: 'model create lens 1 0 0.125 0.5 0.25 1.5'"
                 )
