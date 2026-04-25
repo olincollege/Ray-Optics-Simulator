@@ -92,7 +92,7 @@ class Model():
         """
         for ray in self._ray_list:
             ray.take_step(self._lens_list)
-        
+
 
     def run_simulation(self, steps_to_take):
         """
@@ -131,8 +131,8 @@ class IdealLens(Model):
         Args:
             xpos: the x position of the lens
             ypos: the y position of the lens
-            axis1: length of the first axis
-            axis2: length of the second axis
+            axis1: length of the first axis, from center to edge (half of total width)
+            axis2: length of the second axis, from center to edge (half of total height)
             radius: parameter controlling the size of the ellipse
             index_of_refraction: index of refraction of the lens
             model_object: the model to add the lens to
@@ -186,8 +186,9 @@ class LightSource(Model):
             ray_list.append(LightRay(angle, init_x, init_y, step_size))
             angle += angle_step_size
 
-        #Send Light Ray List to Model
+        #Send Light Ray List to Model and reset
         Model.new_ray_list(model_object, ray_list)
+        ray_list = []
 
 
 class LightRay(Model):
@@ -217,6 +218,7 @@ class LightRay(Model):
         self._relevant_lens_index = None
         self._current_medium = None
         self._last_medium = None
+
     def update_medium(self, lens_list):
         """
         Detect if a ray is within a lens or
@@ -229,6 +231,8 @@ class LightRay(Model):
         for lens in lens_list:
             converted_x_coord = self._current_x_pos - lens.xpos_center
             converted_y_coord = self._current_y_pos - lens.ypos_center
+
+            #Something is wrong with the logic in this segment, fix -- Tanzi (for tanzi to fix)
             radius = (
                 converted_x_coord
                 ** 2 / lens.axis1
@@ -239,6 +243,8 @@ class LightRay(Model):
             if radius <= lens.radius:
                 new_medium_index = lens.index_of_refraction
                 self._relevant_lens_index = lens_list.index(lens)
+
+
         self._last_medium = self._current_medium
         self._current_medium = new_medium_index
 
