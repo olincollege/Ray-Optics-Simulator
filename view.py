@@ -36,6 +36,10 @@ class Viewer:
         This method is called by the controller to render a plot of the simulation. 
         It is provided simulation data via the variable model_data. The plot is saved 
         to the file sim_result.png
+
+        Args:
+            model_data: A list with three sublists [lens_list, ray_list, source] as provided
+                by the model when the run_simulation function is run
         """
         #Initialize plot
         plt.style.use('dark_background')
@@ -53,7 +57,6 @@ class Viewer:
         # ASSUMING ONLY 1 LENS
         lens_list=model_data[0]
         for lens in lens_list:
-            print(lens.radius, lens.axis1, lens.axis2)
             lens_ellipse=Ellipse((lens.xpos_center,lens.ypos_center),lens.axis1*lens.radius*2, lens.axis2*lens.radius*2,facecolor=self._colormap[lens.type])
             ax.add_patch(lens_ellipse)
         #lens_coords = (
@@ -71,3 +74,4 @@ class Viewer:
         ax.set_xlabel("X Axis (meters)")
         ax.set_ylabel("Y Axis (meters)")
         fig.savefig("sim_result.png")
+        plt.close(fig)
