@@ -232,15 +232,11 @@ class LightRay(Model):
             converted_x_coord = self._current_x_pos - lens.xpos_center
             converted_y_coord = self._current_y_pos - lens.ypos_center
 
-            #Something is wrong with the logic in this segment, fix -- Tanzi (for tanzi to fix)
-            radius = (
-                converted_x_coord
-                ** 2 / lens.axis1
-                ** 2 + converted_y_coord
-                ** 2 / lens.axis2
-                ** 2
+            eq_radius = (
+                converted_x_coord ** 2 / (lens.axis1 * lens.radius) ** 2 +
+                converted_y_coord ** 2 / (lens.axis2 * lens.radius) ** 2
             )
-            if radius <= lens.radius:
+            if eq_radius <= 1:
                 new_medium_index = lens.index_of_refraction
                 self._relevant_lens_index = lens_list.index(lens)
 
