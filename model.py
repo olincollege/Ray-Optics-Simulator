@@ -240,40 +240,67 @@ class LightRay(Model):
                 new_medium_index = lens.index_of_refraction
                 self._relevant_lens_index = lens_list.index(lens)
 
-
         self._last_medium = self._current_medium
         self._current_medium = new_medium_index
 
     def update_angle(self, lens_list):
         """
-        Update a ray's angle according to Snell's law.
-
-        Args:
-            lens_list: a list of lenses in the simulation
+        Update ray angle using Snell's Law (vector form).
         """
+
+        # Detect is there is no change in medium
         if self._last_medium in (None, self._current_medium):
             return
 
-        relevant_lens = lens_list[self._relevant_lens_index]
-        converted_x_coord = self._current_x_pos - relevant_lens.xpos_center
-        converted_y_coord = self._current_y_pos - relevant_lens.ypos_center
-        angle_to_center = math.atan(converted_y_coord / converted_x_coord)
-        ratio = (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle))
-        
-        #if abs(ratio)<=1:
-        #if True:
-        self._angle = (
-            math.degrees(angle_to_center)
-            #+90
-            + math.degrees(
-                math.asin(
-                #    (self._last_medium / self._current_medium)*math.sin(math.radians(self._angle)))
-                ((ratio+1)%2)-1
-            )
-            ) % 360
-        )
-        #else:
-             #self._angle = (2 * math.degrees(angle_to_center) - self._angle + 180)%360
+        lens = lens_list[self._relevant_lens_index]
+
+        #Ray direction vector
+        dx = math.cos(math.radians(self._angle))
+        dy = math.sin(math.radians(self._angle))
+
+        #Surface normal (gradient of ellipse)
+        x = self._current_x_pos - lens.xpos_center
+        y = self._current_y_pos - lens.ypos_center
+
+        nx = x / (lens.axis1 * lens.radius) ** 2
+        ny = y / (lens.axis2 * lens.radius) ** 2
+
+        # Normalize normal
+        norm_mag = math.sqrt(nx**2 + ny**2)
+        if norm_mag == 0:
+            return  # avoid division by zero
+
+        nx /= norm_mag
+        ny /= norm_mag
+
+        #Ensure normal points against ray
+        dot = dx * nx + dy * ny
+        if dot > 0:
+            nx = -nx
+            ny = -ny
+            dot = dx * nx + dy * ny
+
+        #Snell’s Law
+        n1 = self._last_medium
+        n2 = self._current_medium
+        ratio = n1 / n2
+
+        k = 1 - ratio**2 * (1 - dot**2)
+
+        #Total Internal Reflection
+        if k < 0:
+            # Reflect: R = D - 2(D·N)N
+            rx = dx - 2 * dot * nx
+            ry = dy - 2 * dot * ny
+        else:
+            # Refract
+            rx = ratio * dx - (ratio * dot + math.sqrt(k)) * nx
+            ry = ratio * dy - (ratio * dot + math.sqrt(k)) * ny
+
+        #Convert back to angle
+        self._angle = math.degrees(math.atan2(ry, rx)) % 360
+
+
     def take_step(self, lens_list):
         """
         Simulate a ray for a single step.
@@ -290,10 +317,3 @@ class LightRay(Model):
         self._current_y_pos += self._step_size * math.sin(
             math.radians(self._angle)
         )
-
-"""
-TO DO:
-Add code to model class to tie it all together
-- Add code to model class to pass neccessary arguments to subclasses to create lenses and whatnot (esp positions and such)
-"""
-
