@@ -55,7 +55,7 @@ class Model():
         Add a new source. 
 
         Args:
-            source_to_add: the source to add
+            source_to_add: the source to add, type str
         """
         self._source = source_to_add
 
@@ -64,7 +64,7 @@ class Model():
         Add a new lens. 
 
         Args:
-            lens_to_add: the lens to add
+            lens_to_add: the lens to add, of type IdealLens
         """
         self._lens_list.append(lens_to_add)
 
@@ -73,7 +73,7 @@ class Model():
         Add a new ray. 
 
         Args:
-            ray_to_add: the ray to add
+            ray_to_add: the ray to add, type LightRay
         """
         self._ray_list.append(ray_to_add)
 
@@ -82,7 +82,7 @@ class Model():
         Replace the ray list. 
 
         Args:
-            ray_list_to_add: the ray list to add
+            ray_list_to_add: the ray list to add, type list of LightRay objects
         """
         self._ray_list = ray_list_to_add
 
@@ -99,10 +99,11 @@ class Model():
         Run the simulation for a defined number of steps. 
 
         Args:
-            steps_to_take: number of steps to take passed as an int
+            steps_to_take: number of steps to take, type int
         """
         steps_to_take=abs(steps_to_take)
         current_step = 0
+
         while current_step < steps_to_take:
             self.iterate_rays()
             current_step += 1
@@ -133,12 +134,12 @@ class IdealLens(Model):
             ypos: the y position of the lens
             axis1: length of the first axis, from center to edge (half of total width)
             axis2: length of the second axis, from center to edge (half of total height)
-            radius: parameter controlling the size of the ellipse
+            radius: multiplier controlling the size of the ellipse
             index_of_refraction: index of refraction of the lens
             model_object: the model to add the lens to
         """
         if index_of_refraction<1 or axis1<=0 or axis2<=0 or radius<=0 or xpos <=0 or ypos <=0:
-            raise ValueError("INVALID INPUT")
+            raise ValueError("Invalid Input")
         self.xpos_center = xpos
         self.ypos_center = ypos
         self.axis1 = axis1
@@ -209,7 +210,7 @@ class LightRay(Model):
             init_angle: initial angle for a ray
             init_x_pos: initial x position for a ray
             init_y_pos: initial y position for a ray
-            step_size: how large of step sizes are taken in simulation
+            step_size: how large of step sizes are taken in simulation (in meters)
         """
         self.pos_list=[]
         self._angle = init_angle
@@ -228,20 +229,32 @@ class LightRay(Model):
         Args:
             lens_list: a list of lenses in the simulation
         """
+        #Index of air, if not in lens this is new index
         new_medium_index = 1
+
+        #Iterate over every lens in simulation
         for lens in lens_list:
+
+            #Set origin as center of lens
             converted_x_coord = self._current_x_pos - lens.xpos_center
             converted_y_coord = self._current_y_pos - lens.ypos_center
 
+            #Calculate equivalent radius to lens using ellipse equation
             eq_radius = (
                 converted_x_coord ** 2 / (lens.axis1 * lens.radius) ** 2 +
                 converted_y_coord ** 2 / (lens.axis2 * lens.radius) ** 2
             )
+
+            #If Eq. radius is under 1 the ray is inside the lens
+            #Update index accordingly
             if eq_radius <= 1:
                 new_medium_index = lens.index_of_refraction
                 self._relevant_lens_index = lens_list.index(lens)
 
+        #Set last medium to current medium
         self._last_medium = self._current_medium
+
+        #Update current medium to new medium
         self._current_medium = new_medium_index
 
     def update_angle(self, lens_list):
@@ -309,9 +322,14 @@ class LightRay(Model):
         Args:
             lens_list: a list of lenses in the simulation
         """
+        #Update personal position list with current position
         self.pos_list.append((self._current_x_pos, self._current_y_pos))
+
+        #Update medium then angle
         self.update_medium(lens_list)
         self.update_angle(lens_list)
+
+        #Update positions based on angle
         self._current_x_pos += self._step_size * math.cos(
             math.radians(self._angle)
         )
