@@ -28,6 +28,9 @@ class CommandLine:
         self.quit_var = 1
 
     def _help(self, command):
+        """
+        Displays help messages depending on input
+        """
         match command:
             case "model":
                 self.commands["model"]["help"]()
@@ -95,6 +98,14 @@ class CommandLine:
         return _cmd
 
     def _cmd_to_func(self, _cmd):
+        """
+        Parses user input to call model commands.
+
+        Args:
+            _cmd: str representing user input
+        """
+        # Comments run through example input:
+        # 'model create lens 1 0 .125 .25 2'
         # Clean up user input, unstring floats
         for i, element in enumerate(_cmd):
             try:
