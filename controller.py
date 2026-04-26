@@ -98,7 +98,7 @@ class CommandLine:
         # Clean up user input, unstring floats
         for i, element in enumerate(_cmd):
             try:
-                _cmd[i] = abs(float(element))
+                _cmd[i] = float(element)
             except ValueError:
                 pass
         # ['model', 'create', 'lens', 1, 0, .125, .25, 2]

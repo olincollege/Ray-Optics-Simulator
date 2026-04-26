@@ -52,9 +52,9 @@ class Model:
             " lens from the center to the edge (meters)\n   height is the"
             " vertical height of the lens from the center to the edge"
             " (meters)\n   radius acts as a multiplier for the axis, it is"
-            " reccomended to set this to 1\n   index_of_refraction represents"
+            " recommended to set this to 1\n   index_of_refraction represents"
             " the index of refraction for the lens\nExample lens command:"
-            " 'model create lens 1 0 0.125 0.5 0.25 1.5'\n"
+            " 'model create lens 1 0 0.125 0.5 1 1.5'\n"
         )
 
     def new_source(self, source_to_add):
