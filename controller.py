@@ -36,13 +36,18 @@ class CommandLine:
                     "\nSyntax: ‘run <timesteps>’\nThe run command will simulate"
                     " the model for a specified number\nof timesteps, plot the"
                     " results, and save the plot as\n‘sim_result.png’ in the"
-                    " local directory.\n\nExample run command: 'run 1000'\nThis"
-                    " will run the currently specified model for 1000"
+                    " local directory.\n\nExample run command: 'run 4000'\nThis"
+                    " will run the currently specified model for 4000"
                     " timesteps\nand plot the result."
+                )
+            case "quit":
+                print(
+                    "\nRunning quit will exit the program. This wipes the\n"
+                    "current model data letting you restart from scratch\n"
                 )
             case _:
                 print(
-                    "help\n\nThis program lets you specify light source"
+                    "\nThis program lets you specify light source"
                     " parameters like position\nand ray density and lens"
                     " parameters like refractivity and size. You\nfirst need to"
                     " specify model parameters using the 'model' command.\nYou"
@@ -52,7 +57,7 @@ class CommandLine:
                     " on how to run the model)\n\nAs a reminder here is the"
                     " command list:"
                 )
-                print(f"Command List: {list(self.commands)}")
+                print(f"Command List: {list(self.commands)}\n")
 
     def _run_simulation(self, steps):
         """

@@ -12,10 +12,10 @@ controller.view_instance = viewer
 
 # Print intro message
 print(
-    "Welcome to the Ray Optics Simulator Program \n"
+    "\nWelcome to the Ray Optics Simulator Program \n"
     "This programs lets you input parameters for an optics"
     " simulation, run a simulation, and plot the results \n"
-    "Type 'help' for a list of commands and an explanation of the program!"
+    "Type 'help' for a list of commands and an explanation of the program!\n"
 )
 
 # Run program

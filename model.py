@@ -39,8 +39,8 @@ class Model:
             " inputs after the command: lens_type, x_position, y_position,"
             " ray_step_size, ray_angle_step_size\n   lens_type currently only"
             " supports 'standard' which represents an ideal lens.\n  "
-            " x_position is in meters and should ideally be between -1 and 1\n "
-            "  y_position is in meters and should ideally be between 0 and 2\n "
+            " x_position is in meters and should ideally be between 0 and 2\n "
+            "  y_position is in meters and should ideally be between -1 and 1\n "
             "  Ray_step_size represents how far to step each light ray in the"
             " simulation (meters).\n   Ray_angle_step_size represents the"
             " rotation between each light ray sent out (degrees)\nExample light"
@@ -54,7 +54,7 @@ class Model:
             " (meters)\n   radius acts as a multiplier for the axis, it is"
             " reccomended to set this to 1\n   index_of_refraction represents"
             " the index of refraction for the lens\nExample lens command:"
-            " 'model create lens 1 0 0.125 0.5 0.25 1.5'"
+            " 'model create lens 1 0 0.125 0.5 0.25 1.5'\n"
         )
 
     def new_source(self, source_to_add):
