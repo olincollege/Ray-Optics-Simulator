@@ -24,7 +24,7 @@ def test_new_lens():
     test_model = Model()
     test_model_2 = Model()
     test_lens = IdealLens(1, 1, 2, 2, 1, 1.5, test_model_2)
-    test_model.new_source(test_lens)
+    test_model.new_lens(test_lens)
     assert test_model._lens_list==test_model_2._lens_list
 
 def test_new_ray():
@@ -36,7 +36,8 @@ def test_new_ray():
     test_model_2 = Model()
     test_ray = LightRay(2, .001, 4, test_model_2)
     test_model.new_ray(test_ray)
-    assert test_model._ray_list==test_model_2._ray_list
+    test_model_2.new_ray(test_ray)
+    assert test_model._ray_list==test_model_2._ray_list==[test_ray]
 
 def test_new_ray_list():
     """

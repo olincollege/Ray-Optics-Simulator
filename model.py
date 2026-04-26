@@ -12,9 +12,6 @@ class Model():
     A class to utilize above defined helper classes. 
     Implement functions to run the ray optics simulation. 
     """
-    _source = None
-    _lens_list = []
-    _ray_list = []
 
     def __init__(self):
         self.function_dict = {}
@@ -22,6 +19,10 @@ class Model():
         self.function_dict['create'] = {'source':LightSource,'lens':IdealLens}
         #self.function_dict['run'] = self.run_simulation
         self.function_dict['debug'] = self._print
+
+        self._source = None
+        self._lens_list = []
+        self._ray_list = []
 
     def _print(self):
         print(f'lens list: {self._lens_list}')
