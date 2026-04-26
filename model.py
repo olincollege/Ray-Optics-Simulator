@@ -1,59 +1,65 @@
 """
-Model class for a ray optics simulation. 
-Implement model logic and functionality.
+Model class for a ray optics simulation.
+Implements model logic and functionality.
 """
 
 import math
 
-class Model():
-    """
-    Implement the Model class. 
 
-    A class to utilize above defined helper classes. 
-    Implement functions to run the ray optics simulation. 
+class Model:
+    """
+    Implement the Model class.
+
+    A class to utilize above defined helper classes.
+    Implement functions to run the ray optics simulation.
     """
 
     def __init__(self):
         self.function_dict = {}
-        self.function_dict['help'] = self._help
-        self.function_dict['create'] = {'source':LightSource,'lens':IdealLens}
-        #self.function_dict['run'] = self.run_simulation
-        self.function_dict['debug'] = self._print
-
+        self.function_dict["help"] = self._help
+        self.function_dict["create"] = {
+            "source": LightSource,
+            "lens": IdealLens,
+        }
+        self.function_dict["debug"] = self._print
         self._source = None
         self._lens_list = []
         self._ray_list = []
 
     def _print(self):
-        print(f'lens list: {self._lens_list}')
-        print(f'ray list: {self._ray_list}')
-        print(f'source: {self._source}')
+        print(f"lens list: {self._lens_list}")
+        print(f"ray list: {self._ray_list}")
+        print(f"source: {self._source}")
 
     def _help(self, command=None):
         print(
-                "\nTo run the model it is necessary to specify light source parameters"
-                " and lens parameters\nThis is done through 'model create source' and"
-                " 'model create lens'\n\nSource expects a 5 inputs after the command: "
-                "lens_type, x_position, y_position, ray_step_size, ray_angle_step_size\n"
-                "   lens_type currently only supports 'standard' which represents an ideal lens.\n"
-                "   x_position is in meters and should ideally be between -1 and 1\n"
-                "   y_position is in meters and should ideally be between 0 and 2\n"
-                "   Ray_step_size represents how far to step each light ray in the simulation (meters).\n"
-                "   Ray_angle_step_size represents the rotation between each light ray sent out (degrees)\n"
-                "Example light source command: 'model create source standard 0 0 0.001 1'\n\n"
-                "Lens expects 6 inputs after the command: "
-                "x_position, y_position, width, height, radius, refraction_index\n"
-                "   x_position and y_position give the coordinates for the center of the lens in meters\n"
-                "   width is the horizontal thickness of the lens from the center to the edge (meters)\n"
-                "   height is the vertical height of the lens from the center to the edge (meters)\n"
-                "   radius acts as a multiplier for the axis, it is reccomended to set this to 1\n"
-                "   index_of_refraction represents the index of refraction for the lens\n"
-                "Example lens command: 'model create lens 1 0 0.125 0.5 0.25 1.5'"
-                )
+            "\nTo run the model it is necessary to specify light source"
+            " parameters and lens parameters\nThis is done through 'model"
+            " create source' and 'model create lens'\n\nSource expects a 5"
+            " inputs after the command: lens_type, x_position, y_position,"
+            " ray_step_size, ray_angle_step_size\n   lens_type currently only"
+            " supports 'standard' which represents an ideal lens.\n  "
+            " x_position is in meters and should ideally be between -1 and 1\n "
+            "  y_position is in meters and should ideally be between 0 and 2\n "
+            "  Ray_step_size represents how far to step each light ray in the"
+            " simulation (meters).\n   Ray_angle_step_size represents the"
+            " rotation between each light ray sent out (degrees)\nExample light"
+            " source command: 'model create source standard 0 0 0.001"
+            " 1'\n\nLens expects 6 inputs after the command: x_position,"
+            " y_position, width, height, radius, refraction_index\n  "
+            " x_position and y_position give the coordinates for the center of"
+            " the lens in meters\n   width is the horizontal thickness of the"
+            " lens from the center to the edge (meters)\n   height is the"
+            " vertical height of the lens from the center to the edge"
+            " (meters)\n   radius acts as a multiplier for the axis, it is"
+            " reccomended to set this to 1\n   index_of_refraction represents"
+            " the index of refraction for the lens\nExample lens command:"
+            " 'model create lens 1 0 0.125 0.5 0.25 1.5'"
+        )
 
     def new_source(self, source_to_add):
         """
-        Add a new source. 
+        Add a new source.
 
         Args:
             source_to_add: the source to add, type str
@@ -62,7 +68,7 @@ class Model():
 
     def new_lens(self, lens_to_add):
         """
-        Add a new lens. 
+        Add a new lens.
 
         Args:
             lens_to_add: the lens to add, of type IdealLens
@@ -71,7 +77,7 @@ class Model():
 
     def new_ray(self, ray_to_add):
         """
-        Add a new ray. 
+        Add a new ray.
 
         Args:
             ray_to_add: the ray to add, type LightRay
@@ -80,7 +86,7 @@ class Model():
 
     def new_ray_list(self, ray_list_to_add):
         """
-        Replace the ray list. 
+        Replace the ray list.
 
         Args:
             ray_list_to_add: the ray list to add, type list of LightRay objects
@@ -94,21 +100,21 @@ class Model():
         for ray in self._ray_list:
             ray.take_step(self._lens_list)
 
-
     def run_simulation(self, steps_to_take):
         """
-        Run the simulation for a defined number of steps. 
+        Run the simulation for a defined number of steps.
 
         Args:
             steps_to_take: number of steps to take, type int
         """
-        steps_to_take=abs(steps_to_take)
+        steps_to_take = abs(steps_to_take)
         current_step = 0
 
         while current_step < steps_to_take:
             self.iterate_rays()
             current_step += 1
         return [self._lens_list, self._ray_list, self._source]
+
 
 class IdealLens(Model):
     """
@@ -124,9 +130,18 @@ class IdealLens(Model):
     axis2 = None
     radius = None
     index_of_refraction = None
-    model_data=None
+    model_data = None
 
-    def __init__(self, xpos, ypos, axis1, axis2, radius, index_of_refraction, model_object):
+    def __init__(
+        self,
+        xpos,
+        ypos,
+        axis1,
+        axis2,
+        radius,
+        index_of_refraction,
+        model_object,
+    ):
         """
         Initialize a lens object.
 
@@ -139,7 +154,7 @@ class IdealLens(Model):
             index_of_refraction: index of refraction of the lens
             model_object: the model to add the lens to
         """
-        if index_of_refraction<1 or axis1<=0 or axis2<=0 or radius<=0:
+        if index_of_refraction < 1 or axis1 <= 0 or axis2 <= 0 or radius <= 0:
             raise ValueError("Invalid Input")
         self.xpos_center = xpos
         self.ypos_center = ypos
@@ -148,7 +163,7 @@ class IdealLens(Model):
         self.radius = radius
         self.index_of_refraction = index_of_refraction
         Model.new_lens(model_object, self)
-        self.type='ideal'
+        self.type = "ideal"
 
 
 class LightSource(Model):
@@ -160,7 +175,15 @@ class LightSource(Model):
     with the source type.
     """
 
-    def __init__(self, type_of_source, init_x, init_y, step_size, angle_step_size, model_object):
+    def __init__(
+        self,
+        type_of_source,
+        init_x,
+        init_y,
+        step_size,
+        angle_step_size,
+        model_object,
+    ):
         """
         Initialize LightSource class and generate a list of rays in accordance
         to source type.
@@ -173,15 +196,15 @@ class LightSource(Model):
             model_object: the model to add the rays to
         """
 
-        #Set Lightsource Type (currently only supports 'standard')
+        # Set Lightsource Type (currently only supports 'standard')
         if type_of_source != "standard":
             raise ValueError("Invalid Lightsource Type")
         self._type = type_of_source
 
-        if step_size <=0 or angle_step_size <=0:
+        if step_size <= 0 or angle_step_size <= 0:
             raise ValueError("All parameter values must be above zero")
 
-        #Build Light Ray List
+        # Build Light Ray List
         Model.new_source(model_object, self)
         angle = 0
         ray_list = []
@@ -189,7 +212,7 @@ class LightSource(Model):
             ray_list.append(LightRay(angle, init_x, init_y, step_size))
             angle += angle_step_size
 
-        #Send Light Ray List to Model and reset
+        # Send Light Ray List to Model and reset
         Model.new_ray_list(model_object, ray_list)
         ray_list = []
 
@@ -213,7 +236,7 @@ class LightRay(Model):
             init_y_pos: initial y position for a ray
             step_size: how large of step sizes are taken in simulation (in meters)
         """
-        self.pos_list=[]
+        self.pos_list = []
         self._angle = init_angle
         self._current_x_pos = init_x_pos
         self._current_y_pos = init_y_pos
@@ -230,32 +253,32 @@ class LightRay(Model):
         Args:
             lens_list: a list of lenses in the simulation
         """
-        #Index of air, if not in lens this is new index
+        # Index of air, if not in lens this is new index
         new_medium_index = 1
 
-        #Iterate over every lens in simulation
+        # Iterate over every lens in simulation
         for lens in lens_list:
 
-            #Set origin as center of lens
+            # Set origin as center of lens
             converted_x_coord = self._current_x_pos - lens.xpos_center
             converted_y_coord = self._current_y_pos - lens.ypos_center
 
-            #Calculate equivalent radius to lens using ellipse equation
+            # Calculate equivalent radius to lens using ellipse equation
             eq_radius = (
-                converted_x_coord ** 2 / (lens.axis1 * lens.radius) ** 2 +
-                converted_y_coord ** 2 / (lens.axis2 * lens.radius) ** 2
+                converted_x_coord**2 / (lens.axis1 * lens.radius) ** 2
+                + converted_y_coord**2 / (lens.axis2 * lens.radius) ** 2
             )
 
-            #If Eq. radius is under 1 the ray is inside the lens
-            #Update index accordingly
+            # If Eq. radius is under 1 the ray is inside the lens
+            # Update index accordingly
             if eq_radius <= 1:
                 new_medium_index = lens.index_of_refraction
                 self._relevant_lens_index = lens_list.index(lens)
 
-        #Set last medium to current medium
+        # Set last medium to current medium
         self._last_medium = self._current_medium
 
-        #Update current medium to new medium
+        # Update current medium to new medium
         self._current_medium = new_medium_index
 
     def update_angle(self, lens_list):
@@ -269,11 +292,11 @@ class LightRay(Model):
 
         lens = lens_list[self._relevant_lens_index]
 
-        #Ray direction vector
+        # Ray direction vector
         dx = math.cos(math.radians(self._angle))
         dy = math.sin(math.radians(self._angle))
 
-        #Surface normal (gradient of ellipse)
+        # Surface normal (gradient of ellipse)
         x = self._current_x_pos - lens.xpos_center
         y = self._current_y_pos - lens.ypos_center
 
@@ -288,21 +311,21 @@ class LightRay(Model):
         nx /= norm_mag
         ny /= norm_mag
 
-        #Ensure normal points against ray
+        # Ensure normal points against ray
         dot = dx * nx + dy * ny
         if dot > 0:
             nx = -nx
             ny = -ny
             dot = dx * nx + dy * ny
 
-        #Snell’s Law
+        # Snell’s Law
         n1 = self._last_medium
         n2 = self._current_medium
         ratio = n1 / n2
 
         k = 1 - ratio**2 * (1 - dot**2)
 
-        #Total Internal Reflection
+        # Total Internal Reflection
         if k < 0:
             # Reflect: R = D - 2(D·N)N
             rx = dx - 2 * dot * nx
@@ -312,9 +335,8 @@ class LightRay(Model):
             rx = ratio * dx - (ratio * dot + math.sqrt(k)) * nx
             ry = ratio * dy - (ratio * dot + math.sqrt(k)) * ny
 
-        #Convert back to angle
+        # Convert back to angle
         self._angle = math.degrees(math.atan2(ry, rx)) % 360
-
 
     def take_step(self, lens_list):
         """
@@ -323,14 +345,14 @@ class LightRay(Model):
         Args:
             lens_list: a list of lenses in the simulation
         """
-        #Update personal position list with current position
+        # Update personal position list with current position
         self.pos_list.append((self._current_x_pos, self._current_y_pos))
 
-        #Update medium then angle
+        # Update medium then angle
         self.update_medium(lens_list)
         self.update_angle(lens_list)
 
-        #Update positions based on angle
+        # Update positions based on angle
         self._current_x_pos += self._step_size * math.cos(
             math.radians(self._angle)
         )

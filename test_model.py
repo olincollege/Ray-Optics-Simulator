@@ -16,7 +16,6 @@ def test_new_source():
     assert test_model._source==test_model_2._source
 
 def test_new_lens():
-    # (, xpos, ypos, axis1, axis2, radius, index_of_refraction, model_object)
     """
     Test for the model function new_lens, makes sure
     a new lens is actually assigned corectly.
@@ -55,6 +54,10 @@ def test_new_ray_list():
 ### Category: Class
 
 def test_LightSource_lengths():
+    """
+    Test that the length of ray list made by the
+    LightSource class is correct
+    """
     test_model = Model(); test_source = LightSource('standard',1,1,.001,360,test_model)
     assert len(test_model._ray_list)==1
     test_model = Model(); test_source = LightSource('standard',1,1,.001,180,test_model)
@@ -65,6 +68,10 @@ def test_LightSource_lengths():
     assert len(test_model._ray_list)==90
 
 def test_IdealLens():
+    """
+    Test that each parameter of a lens is correctly
+    assigned when made using the IdealLens class.
+    """
     test_model = Model()
     test_lens = IdealLens(1, 2, 6, 9, 3, 1.5, test_model)
     test_lens = test_model._lens_list[0]
@@ -79,6 +86,9 @@ test_IdealLens()
 ### Category: Model functions
 
 def test_iterate_rays():
+    """
+    NEED DOCSTRING
+    """
     test_model = Model()
     test_lens = IdealLens(1, 2, 4, 4, 2, 1.5, test_model)
     test_source = LightSource('standard', 0, 0, .001, 4, test_model)
@@ -86,6 +96,9 @@ def test_iterate_rays():
     assert len(test_model._ray_list[0].pos_list)==1
 
 def test_run_simulation():
+    """
+    NEED DOCSTRING
+    """
     test_model = Model()
     test_lens = IdealLens(1, 2, 4, 4, 2, 1.5, test_model)
     test_source = LightSource('standard', 0, 0, .001, 4, test_model)

@@ -2,29 +2,21 @@ from controller import CommandLine
 from model import Model
 from view import Viewer
 
+# Initialize program to run
 viewer = Viewer()
 model = Model()
 controller = CommandLine()
-
 controller.commands["model"] = model.function_dict
 controller.model_instance = model
 controller.view_instance = viewer
 
-# REMOVE BEFORE SUBMITTING!!!!!!!!!!!!!!!!!!!!!!!
-### CODE TO TEST FULL PIPELINE ###
-controller.commands["model"]["create"]["lens"](
-    1, 0, 0.125, 0.5, 0.2, 1.5, model
-)
-controller.commands["model"]["create"]["source"](
-    "standard", 0, 0, 0.001, 4, model
-)
-controller.commands["run"](1500)
-###
-
+# Print intro message
 print(
     "Welcome to the Ray Optics Simulator Program \n"
     "This programs lets you input parameters for an optics"
     " simulation, run a simulation, and plot the results \n"
     "Type 'help' for a list of commands and an explanation of the program!"
 )
+
+# Run program
 controller.main_loop()
