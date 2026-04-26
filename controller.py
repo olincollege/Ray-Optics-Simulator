@@ -110,28 +110,28 @@ class CommandLine:
         # ['model', 'create', 'lens', 1, 0, .125, .25, 2, model]
         try:
             self.commands[_cmd[0]]()
-        except KeyError:
+        except (KeyError, ValueError):
             print("Invalid Command!")
         except TypeError:
             try:
                 self.commands[_cmd[0]](*_cmd[1:])
                 # self.commands['model'](['create', 'lens', 1, 0, .125, .25, 2, model])
                 # model.function_dict(['create', 'lens', 1, 0, .125, .25, 2, model])
-            except KeyError:
+            except (KeyError, ValueError):
                 print("Invalid Command!")
             except TypeError:
                 try:
                     self.commands[_cmd[0]][_cmd[1]](*_cmd[2:])
                     # model.function_dict['create'](['lens', 1, 0, .125, .25, 2, model])
                     # {'source':LightSource,'lens':IdealLens}(['lens', 1, 0, .125, .25, 2, model])
-                except KeyError:
+                except (KeyError, ValueError):
                     print("Invalid Command!")
                 except TypeError:
                     try:
                         self.commands[_cmd[0]][_cmd[1]][_cmd[2]](*_cmd[3:])
                     # IdealLens([1, 0, .125, .25, 2, model])
                     # This is the call of IdealLens with the provided parameters
-                    except KeyError:
+                    except (KeyError, ValueError):
                         print("Invalid Command!")
                     except TypeError:
                         try:
@@ -140,8 +140,7 @@ class CommandLine:
                             )
                         except IndexError:
                             print("Not enough parameters!")
-                        except (TypeError, KeyError):
-                            print(_cmd)
+                        except (TypeError, KeyError, ValueError):
                             print("Invalid Command, Please Try Again!")
 
     def main_loop(self):
