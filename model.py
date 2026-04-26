@@ -138,7 +138,7 @@ class IdealLens(Model):
             index_of_refraction: index of refraction of the lens
             model_object: the model to add the lens to
         """
-        if index_of_refraction<1 or axis1<=0 or axis2<=0 or radius<=0 or xpos <=0 or ypos <=0:
+        if index_of_refraction<1 or axis1<=0 or axis2<=0 or radius<=0:
             raise ValueError("Invalid Input")
         self.xpos_center = xpos
         self.ypos_center = ypos
@@ -177,7 +177,7 @@ class LightSource(Model):
             raise ValueError("Invalid Lightsource Type")
         self._type = type_of_source
 
-        if init_x <=0 or init_y <=0 or step_size <=0 or angle_step_size <=0:
+        if step_size <=0 or angle_step_size <=0:
             raise ValueError("All parameter values must be above zero")
 
         #Build Light Ray List
