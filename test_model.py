@@ -87,7 +87,8 @@ test_IdealLens()
 
 def test_iterate_rays():
     """
-    NEED DOCSTRING
+    Check that iterate_rays goes throught the correct
+    amount of steps
     """
     test_model = Model()
     test_lens = IdealLens(1, 2, 4, 4, 2, 1.5, test_model)
@@ -97,13 +98,13 @@ def test_iterate_rays():
 
 def test_run_simulation():
     """
-    NEED DOCSTRING
+    Test that the final data from the simulation is
+    outputed in the correct format.
     """
     test_model = Model()
     test_lens = IdealLens(1, 2, 4, 4, 2, 1.5, test_model)
     test_source = LightSource('standard', 0, 0, .001, 4, test_model)
     test_data = test_model.run_simulation(40)
-    assert len(test_model._ray_list[0].pos_list)==40
     assert len(test_model._ray_list[0].pos_list)==40
     assert test_data[2]==test_model._source
     assert test_data[1]==test_model._ray_list
