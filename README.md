@@ -51,12 +51,14 @@ The model command is used to create light sources and lenses. Each of these uses
 
 The command `run <timesteps>` will simulate the model for a specified number of timesteps, plot the results, and save the plot as `sim_result.png` in the local directory. The command expects one argument, `<timesteps>` representing the amount of timesteps, or iterations, of the model to run. Typically `<timesteps>` is on the order of ~4000.
 
-`run` Example:
-  - `run 4000`
+`run` Examples:
+  - `run 4000`; runs the simulation for 4000 steps
+  - `run`; runs the simulation for the default number of steps
 
 ### `quit` Command
 
 Running `quit` will exit the program. This wipes the current model data letting you restart from scratch.
+It is reccomended to run quit after each simulation as there are currently no methods to delete objects once created.
 
 
 ## Installation
@@ -68,7 +70,7 @@ Once the project files are installed the program can be used by running the `mai
 
 The program should open a command line window that has a small intro message. The command line should then display the text `Enter a command:`. Once at this stage you can begin using the program.
 
-1. First you need to specify a few things like light sources and lenses. You can add as many light sources and lenses as you want.
+1. First you need to specify objects, such as light sources and lenses. You can add as many light sources and lenses as you want.
    - Light sources can be specified with the command `model create source <parameters>` (Parameter descriptions [here](#model-command))
    - Lenses can be specified with the command `model create lens <parameters>` (Parameter descriptions [here](#model-command))
 2. Once you are done specifying the model parameters you can run the simulation
@@ -79,13 +81,14 @@ The program should open a command line window that has a small intro message. Th
    - NOTE: You may need to refresh your file viewer for the image to appear (especially if you are on Unity)
 
 ### Lens Types
-TANZI
+Currently, the only lens type supported is elliptical lenses. Users are able to define the position, axies, and index of refraction of the lens.
 
 ### Light Source Types
-Currently the program only supports `standard` which represents a 360° point source.
+Currently the program only supports `standard` which represents a 360° point source, akin to a lightbulb or other 'normal' lightsources.
 
 ### Assumptions and Limitations
-If multiple lenses overlap they are considered as one continuous lens
+This program simulates light by treating it as a ray. This means that behaviour such as diffraction, interference, and all other wave-light behaviour of light is not captured within this simulation. Other behavior, such as partial reflection, is also not captured. 
+This simulation currently only implements Snell's law. This means behaviour such as non-ideal focusing, total internal reflection, refraction, etc. are all partially or wholly captured within the simulation. 
 
 ## Attributions
 This project was developed in 2026 by [Tanzi](https://github.com/Someon332), [Hayden](https://github.com/HaydenZS), and [Derek](https://github.com/derek-forgot) 
