@@ -34,8 +34,8 @@ class Model():
                 "\nTo run the model it is necessary to specify light source parameters"
                 " and lens parameters\nThis is done through 'model create source' and"
                 " 'model create lens'\n\nSource expects a 5 inputs after the command: "
-                "lens_type, x_position, y_position, ray_step_size, ray_angle_step_size\n"
-                "   lens_type currently only supports 'standard' which represents an ideal lens.\n"
+                "source_type, x_position, y_position, ray_step_size, ray_angle_step_size\n"
+                "   source_type currently only supports 'standard' which represents a normal 360 degree source.\n"
                 "   x_position is in meters and should ideally be between -1 and 1\n"
                 "   y_position is in meters and should ideally be between 0 and 2\n"
                 "   Ray_step_size represents how far to step each light ray in the simulation (meters).\n"
@@ -48,7 +48,9 @@ class Model():
                 "   height is the vertical height of the lens from the center to the edge (meters)\n"
                 "   radius acts as a multiplier for the axis, it is reccomended to set this to 1\n"
                 "   index_of_refraction represents the index of refraction for the lens\n"
-                "Example lens command: 'model create lens 1 0 0.125 0.5 0.25 1.5'"
+                "Example lens command: 'model create lens 1 0 0.125 0.5 0.25 1.5'\n"
+                "To run a new simulation, use quit and re-run the program file.\n"
+                "There is currently no way to delete objects or reset the simulation other than by quitting."
                 )
 
     def new_source(self, source_to_add):
