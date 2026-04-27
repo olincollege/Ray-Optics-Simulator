@@ -62,7 +62,12 @@ It is reccomended to run quit after each simulation as there are currently no me
 
 
 ## Installation
-TBA
+Installation of this simulation is relatively straightforward. 
+1. Have an up-to-date python installation where you wish to run this program.
+2. Install the two dependencies; pytest and matplotlib. The specific versions neccessary can be found in requirements.txt
+3. Download all the files into a single folder
+
+After this, you should be able to simply be able to run main.py and use your command line to interface with the program.
 
 ## Usage
 
