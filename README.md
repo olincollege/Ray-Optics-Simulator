@@ -63,7 +63,20 @@ Running `quit` will exit the program. This wipes the current model data letting 
 TBA
 
 ## Usage
-TBA
+
+Once the project files are installed the program can be used by running the `main.py` file. If you are using an IDE, open the `main.py` file in the IDE and click the run button. If you are only using command line, navigate to the directory `main.py` is in with `cd` and then run the command `python main.py`.
+
+The program should open a command line window that has a small intro message. The command line should then display the text `Enter a command:`. Once at this stage you can begin using the program.
+
+1. First you need to specify a few things like light sources and lenses. You can add as many light sources and lenses as you want.
+   - Light sources can be specified with the command `model create source <parameters>` (Parameter descriptions [here](#model-command))
+   - Lenses can be specified with the command `model create lens <parameters>` (Parameter descriptions [here](#model-command))
+2. Once you are done specifying the model parameters you can run the simulation
+   - Use the command `run <timesteps>` to run the simulation for a specified amount of time steps. (More info [here](#run-command))
+3. The command line will show the progress of the simulation and once it has finished you may safely exit the program.
+   - Use the command `quit` to exit the program
+   - The resulting plot from the simulation will be stored as an image named `sim_result.png` in the current directory
+   - NOTE: You may need to refresh your file viewer for the image to appear (especially if you are on Unity)
 
 ### Lens Types
 TANZI
