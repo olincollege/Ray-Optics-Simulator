@@ -64,10 +64,15 @@ TBA
 
 ## Usage
 TBA
+
 ### Lens Types
 TANZI
-### Source Types
-TANZI
-### Assumptions and Limitations
 
+### Light Source Types
+Currently the program only supports `standard` which represents a 360° point source.
+
+### Assumptions and Limitations
 If multiple lenses overlap they are considered as one continuous lens
+
+## Attributions
+This project was developed in 2026 by [Tanzi](https://github.com/Someon332), [Hayden](https://github.com/HaydenZS), and [Derek](https://github.com/derek-forgot) 
