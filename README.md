@@ -3,7 +3,9 @@
 ## Overview
 This project implements a ray optics simulation using Snell's Law. It offers a command line interface where you can specify model parameters, such as light sources and lenses, and run the simulation. 
 
-Currently, elliptical lenses and a standard lightsource type (akin to a lightbulb) is implemented. More complex lenses and types can be approximated through proper parameterization of these objects, but this usage is not reccomended.
+Currently, elliptical lenses and a standard lightsource type (akin to a lightbulb) is implemented. More complex lenses and types can be approximated through proper parameterization of these objects, but this usage is not recommended.
+
+The GitHub repository for this project can be found [here](https://github.com/olincollege/Ray-Optics-Simulator).
 
 ## Available Commands
 
@@ -20,7 +22,7 @@ Here is a more detailed breakdown of each command:
 
 ### `help` Command
 
-This command can be executed by itself by typing `help` or in combination with other commands such as `help model`. The `help` command on it's own gives you a brief overview of the program as well as a brief description of how to use it. When used in combination with other commands, it will give you a description of how to use the other command. i.e. entering `help run` will give you detailed information on the `run` command.
+This command can be executed by itself by typing `help` or in combination with other commands such as `help model`. The `help` command on its own gives you a brief overview of the program as well as a brief description of how to use it. When used in combination with other commands, it will give you a description of how to use the other command. i.e. entering `help run` will give you detailed information on the `run` command.
 
 ### `model` Command
 
@@ -40,7 +42,7 @@ The model command is used to create light sources and lenses. Each of these uses
     - `<width>` is the horizontal width of the lens (meters) from the center of the lens to the edge i.e. 1/2 the total thickness
     - `<height>` is the vertical length of the lens (meters) from the center of the lens to the edge. Again, 1/2 the total vertical size
     - `<radius>` acts as a multiplier to the width and height. Radius must be positive. (Recommended to set this to 1)
-    - `<refraction_index>` represents the the index of refraction for the lens. (Glass is around ~1.5)
+    - `<refraction_index>` represents the index of refraction for the lens. (Glass is around ~1.5)
 
 `model` Examples:
   - `model create source standard 0 0 0.001 1`
@@ -58,20 +60,29 @@ The command `run <timesteps>` will simulate the model for a specified number of 
 ### `quit` Command
 
 Running `quit` will exit the program. This wipes the current model data letting you restart from scratch.
-It is reccomended to run quit after each simulation as there are currently no methods to delete objects once created.
+It is recommended to run quit after each simulation as there are currently no methods to delete objects once created.
 
 
 ## Installation
 Installation of this simulation is relatively straightforward. 
 1. Have an up-to-date python installation where you wish to run this program.
-2. Install the two dependencies; pytest and matplotlib. The specific versions neccessary can be found in requirements.txt
-3. Download all the files into a single folder
+   - We are using python version `3.12.3` (pre-installed on Unity)
+3. Install the two dependencies; pytest and matplotlib. The specific versions necessary can be found in requirements.txt
+   - If you are on the Unity supercomputer both these dependencies are pre-installed.
+   - pytest isn't strictly necessary as it is only used to run the test files.
+   - matplotlib and pytest can be installed with the commands `pip install matplotlib` and `pip install pytest` respectively.
+4. Download all the files into a single folder
+   - The easiest way to do this is through the command line:
+     - Navigate to the directory in which you want to download the project with `cd /DESIRED_PATH`
+     - Once here you can run the command `git clone https://github.com/olincollege/Ray-Optics-Simulator.git`
+     - Once the command is run the files should be ready to go.
+   - Alternatively you can download a .zip of the project [here](https://github.com/olincollege/Ray-Optics-Simulator/archive/refs/heads/main.zip)
 
 After this, you should be able to simply be able to run main.py and use your command line to interface with the program.
 
 ## Usage
 
-Once the project files are installed the program can be used by running the `main.py` file. If you are using an IDE, open the `main.py` file in the IDE and click the run button. If you are only using command line, navigate to the directory `main.py` is in with `cd` and then run the command `python main.py`.
+Once the project files are installed the program can be used by running the `main.py` file. If you are using an IDE, open the `main.py` file in the IDE and click the run button. If you are only using the command line, navigate to the directory `main.py` is in with `cd` and then run the command `python main.py`.
 
 The program should open a command line window that has a small intro message. The command line should then display the text `Enter a command:`. Once at this stage you can begin using the program.
 
@@ -86,7 +97,7 @@ The program should open a command line window that has a small intro message. Th
    - NOTE: You may need to refresh your file viewer for the image to appear (especially if you are on Unity)
 
 ### Lens Types
-Currently, the only lens type supported is elliptical lenses. Users are able to define the position, axies, and index of refraction of the lens.
+Currently, the only lens type supported is elliptical lenses. Users are able to define the position, axes, and index of refraction of the lens.
 
 ### Light Source Types
 Currently the program only supports `standard` which represents a 360° point source, akin to a lightbulb or other 'normal' lightsources.
