@@ -55,6 +55,7 @@ class Model:
             " recommended to set this to 1\n   index_of_refraction represents"
             " the index of refraction for the lens\nExample lens command:"
             " 'model create lens 1 0 0.125 0.5 1 1.5'\n"
+            "To reset the simulation please quit and restart the program."
         )
 
     def new_source(self, source_to_add):
