@@ -1,7 +1,7 @@
 # Ray Optics Simulator
 
 ## Overview
-This project implements a ray optics simulation based around Snell's Law.
+This project implements a ray optics simulation based around Snell's Law. It offers a command line interface where you can specify model parameters like light sources and lenses.
 
 ### Available Commands
 

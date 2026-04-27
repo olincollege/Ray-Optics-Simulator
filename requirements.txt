@@ -1,3 +1,2 @@
-matplotlib
-pytest
-math
+matplotlib==3.10.8
+pytest==9.0.2
