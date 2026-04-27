@@ -16,3 +16,11 @@ Currently, elliptical lenses and a standard lightsource type (akin to a lightbul
 
 ## Installation
 TBA
+
+## Usage
+TBA
+### Lens Types
+TBA
+### Source Types
+TBA
+### Assumptions and Limitations
