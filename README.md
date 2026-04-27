@@ -87,7 +87,8 @@ Currently, the only lens type supported is elliptical lenses. Users are able to 
 Currently the program only supports `standard` which represents a 360° point source, akin to a lightbulb or other 'normal' lightsources.
 
 ### Assumptions and Limitations
-This program simulates light by treating it as a ray. This means that behaviour such as diffraction, interference, and all other wave-light behaviour of light is not captured within this simulation. Other behavior, such as partial reflection, is also not captured. 
+This program simulates light by treating it as a ray. This means that behaviour such as diffraction, interference, divergence, and all other wave-light behaviour of light is not captured within this simulation. Other behavior, such as partial reflection, is also not captured. 
+
 This simulation currently only implements Snell's law. This means behaviour such as non-ideal focusing, total internal reflection, refraction, etc. are all partially or wholly captured within the simulation. 
 
 ## Attributions
