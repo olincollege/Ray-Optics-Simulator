@@ -6,7 +6,8 @@ This project implements a ray optics simulation using Snell's Law. It offers a c
 Currently, elliptical lenses and a standard lightsource type (akin to a lightbulb) is implemented. More complex lenses and types can be approximated through proper parameterization of these objects, but this usage is not recommended.
 
 The GitHub repository for this project can be found [here](https://github.com/olincollege/Ray-Optics-Simulator).
-A demo and explanation of the project can be found [here](https://www.youtube.com/watch?v=RZlslf-qu0M)
+
+A demo and explanation of the project can be found [here](https://www.youtube.com/watch?v=RZlslf-qu0M).
 
 ## Available Commands
 
